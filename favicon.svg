@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Spectrum orb: the site's five brand colours, no letters -->
+  <defs>
+    <linearGradient id="spectrum" x1=".18" y1=".82" x2=".82" y2=".18">
+      <stop offset="0" stop-color="#0049B7"/>
+      <stop offset=".28" stop-color="#00DDFF"/>
+      <stop offset=".5" stop-color="#fff685"/>
+      <stop offset=".72" stop-color="#f75990"/>
+      <stop offset="1" stop-color="#ff1d58"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="url(#spectrum)"/>
+</svg>

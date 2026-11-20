@@ -1,0 +1,1585 @@
+/* ==========================================================
+   Kiatthipat Mengsan — resume site
+   Look: personal and hand-made. White paper, ink type, pen
+   strokes, a sticky note and printed snapshots.
+   Light and dark themes (toggle in the nav, see theme.js).
+   ========================================================== */
+
+/* ---------- Tokens ---------- */
+/* Brand colours and where they go:
+     --queen   #ff1d58  Yass Queen     handwritten notes, pen strokes, button hover
+     --sister  #f75990  Sister Sister  pen strokes
+     --crown   #fff685  Crown Yellow   highlighter, the sticky note, text selection
+     --sky     #00DDFF  Blue Light     pen strokes; links and buttons in dark mode
+     --brutal  #0049B7  Brutal Blue    links and buttons in light mode
+   Contrast (WCAG): on white only Brutal Blue is safe for small text (8:1);
+   the pink notes are large, bold handwriting (3.8:1 passes for large text).
+   On the dark background cyan (11:1), pink (4.9:1) and the inks all pass. */
+:root {
+  --queen: #ff1d58;
+  --sister: #f75990;
+  --crown: #fff685;
+  --sky: #00DDFF;
+  --brutal: #0049B7;
+  --navy: #0B1533;
+
+  color-scheme: light;
+  --bg: #FFFFFF;
+  --ink: var(--navy);
+  --ink-2: #3A4566;
+  --ink-3: #5F6987;
+  --line: #E6E8EF;
+  --paper: #FFFFFF;
+  --tape: rgb(222 214 190 / .75);
+  --accent: var(--brutal);
+  --accent-ink: #FFFFFF;
+  --note: var(--queen);
+  --shadow: 0 1px 2px rgb(11 21 51 / .08), 0 10px 26px -14px rgb(11 21 51 / .35);
+  --dot: rgb(11 21 51 / .16);   /* notebook dot grid */
+  --grain: .05;                 /* paper texture strength */
+
+  --display: "Sarabun", system-ui, -apple-system, "Segoe UI", sans-serif; /* name + headings, bold */
+  --text: "Sarabun", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --hand: "Caveat", "Sriracha", "Segoe Print", "Bradley Hand", cursive; /* Sriracha = Thai handwriting */
+  --squiggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='7' viewBox='0 0 22 7'%3E%3Cpath d='M0 4 Q 5.5 0.5 11 4 T 22 4' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  --max: 68rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0F1322;
+  --ink: #EEEAE0;
+  --ink-2: #C8C4BA;
+  --ink-3: #9D9AA6;
+  --line: #262C44;
+  --paper: #F1EDE4;
+  --tape: rgb(240 232 205 / .55);
+  --accent: var(--sky);
+  --accent-ink: var(--navy);
+  --shadow: 0 1px 2px rgb(0 0 0 / .45), 0 12px 30px -14px rgb(0 0 0 / .8);
+  --dot: rgb(238 234 224 / .12);
+  --grain: .06;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Backdrop: a dotted notebook page with a little paper grain ----------
+   Fixed behind everything, so the page content scrolls over it. The dots
+   are faint where you read (the middle) and a little stronger at the edges.
+   Colours come from --dot / --grain, so it works in light and dark mode. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+body::before {
+  background-image: radial-gradient(circle at 1px 1px, var(--dot) 1.1px, transparent 1.6px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, rgb(0 0 0 / .4), #000 100%);
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, rgb(0 0 0 / .4), #000 100%);
+}
+body::after {
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-theme="dark"] body::after { filter: invert(1); }
+
+h1, h2, h3, p, ul, dl, dd, figure { margin: 0; }
+ul { padding: 0; }
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+a:hover { color: var(--accent); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--crown); color: var(--navy); }
+
+strong { font-weight: 600; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  top: 1rem;
+  z-index: 100;
+  padding: .5rem 1rem;
+  background: var(--ink);
+  color: var(--bg);
+}
+.skip:focus { left: 1rem; }
+
+/* the headline label and contact line only appear in the PDF */
+.hero .print-block { display: none; }
+
+/* smooth colour change when the theme is toggled */
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease, fill .35s ease, stroke .35s ease !important;
+}
+
+/* ---------- Pen strokes (SVGs added by motion.js) ---------- */
+.u-sketch,
+.circled { position: relative; }
+.u-sketch { display: inline-block; white-space: nowrap; }
+
+.scribble {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
+  stroke: var(--stroke, var(--note));
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.scribble.underline {
+  left: -3%;
+  bottom: -.38em;
+  width: 106%;
+  height: .42em;
+}
+.scribble.circle {
+  top: -.5em;
+  left: -.95em;
+  width: calc(100% + 1.9em);
+  height: calc(100% + 1em);
+  stroke-width: 2.25;
+}
+.scribble.arrow {
+  position: static;
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: .1em;
+  vertical-align: -.05em;
+  stroke-width: 2.5;
+}
+
+/* ---------- Handwritten notes ---------- */
+.note {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  color: var(--note);
+  font-family: var(--hand);
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.1;
+  transform: rotate(var(--rot, -2deg));
+  transform-origin: left center;
+}
+.note-hero { --rot: -3deg; margin: .5rem 0 0 1.4rem; }
+.note-inline { --rot: -1.5deg; margin: .3rem 0 .15rem .4rem; font-size: 1.35rem; }
+.gallery-note { --rot: 1.5deg; margin: .9rem 0 0 .4rem; font-size: 1.3rem; }
+.contact-note { --rot: -2.5deg; margin: .35rem 0 0 1.2rem; }
+
+/* ---------- Buttons & links ---------- */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: 2rem;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: .7rem 1.35rem;
+  border-radius: 4px;
+  font: 600 1.05rem/1.2 var(--text);
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease, transform .3s var(--ease-out);
+}
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover {
+  background: var(--queen);
+  color: var(--navy);
+}
+/* movement on hover only for mouse/trackpad, so taps on phones don't leave
+   things stuck mid-tilt */
+@media (hover: hover) {
+  .btn-primary:hover { transform: rotate(-2deg); }
+}
+.link-arrow {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--queen);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+.link-arrow:hover {
+  color: var(--accent);
+  text-decoration-style: wavy;
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 4rem;
+}
+.brand {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  font-size: 1.05rem;
+}
+.nav-links a {
+  position: relative;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+/* hand-drawn squiggle under the section you're reading (and on hover) */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: -.45rem;
+  height: 7px;
+  background: var(--queen);
+  -webkit-mask: var(--squiggle) repeat-x 0 0 / 22px 7px;
+  mask: var(--squiggle) repeat-x 0 0 / 22px 7px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .4s var(--ease-out);
+}
+.nav-links a:hover::after,
+.nav-links a.is-active::after { transform: scaleX(1); }
+.nav-links a.is-active { color: var(--ink); }
+
+.nav-tools { display: flex; flex: none; align-items: center; gap: .6rem; }
+
+/* Phone menu button: two pen lines that turn into an × */
+.menu-toggle {
+  display: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.menu-icon { position: relative; display: block; width: 1.1rem; height: .7rem; }
+.menu-icon span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform .35s var(--ease-out), top .35s var(--ease-out);
+}
+.menu-icon span:first-child { top: 0; }
+.menu-icon span:last-child { top: calc(100% - 2px); }
+.menu-toggle[aria-expanded="true"] .menu-icon span:first-child { top: calc(50% - 1px); transform: rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .menu-icon span:last-child { top: calc(50% - 1px); transform: rotate(-45deg); }
+
+/* Phone menu panel: a sheet of paper under the bar */
+.mobile-menu {
+  position: absolute;
+  top: calc(100% + .5rem);
+  right: var(--gutter);
+  left: var(--gutter);
+  display: grid;
+  gap: .25rem;
+  padding: 1rem 1.25rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(-8px) rotate(-.6deg);
+  transform-origin: top right;
+  transition: opacity .25s ease, transform .35s var(--ease-out);
+}
+.mobile-menu[hidden] { display: none; }
+.mobile-menu.is-open { opacity: 1; transform: none; }
+.mobile-menu ul { list-style: none; }
+.mobile-menu a {
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+.menu-theme {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 3rem;
+  margin-top: .35rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  font: 600 1.05rem/1.2 var(--text);
+  cursor: pointer;
+}
+.menu-theme svg { width: 1.2rem; height: 1.2rem; }
+
+/* EN / ไทย switch: the active language gets the squiggle */
+.lang-switch { display: flex; align-items: center; color: var(--ink-3); }
+.lang-switch button {
+  position: relative;
+  padding: .35rem .4rem;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font: 600 1rem/1.2 var(--text);
+  cursor: pointer;
+}
+.lang-switch button:hover,
+.lang-switch button[aria-pressed="true"] { color: var(--ink); }
+.lang-switch button::after {
+  content: "";
+  position: absolute;
+  left: .25rem;
+  right: .25rem;
+  bottom: -.2rem;
+  height: 7px;
+  background: var(--queen);
+  -webkit-mask: var(--squiggle) repeat-x 0 0 / 22px 7px;
+  mask: var(--squiggle) repeat-x 0 0 / 22px 7px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .4s var(--ease-out);
+}
+.lang-switch button[aria-pressed="true"]::after { transform: scaleX(1); }
+.lang-sep { color: var(--line); }
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .5s var(--ease-out), border-color .2s ease;
+}
+.theme-toggle:hover { border-color: var(--ink-3); }
+@media (hover: hover) {
+  .theme-toggle:hover { transform: rotate(-20deg); }
+}
+.theme-toggle svg { width: 1.15rem; height: 1.15rem; }
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+.brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.brand-short { display: none; }
+@media (max-width: 22rem) {
+  /* the smallest phones: "K. Mengsan" in the bar (the full name is right below) */
+  .brand-full { display: none; }
+  .brand-short { display: inline; }
+}
+
+/* below ~990px the six section links don't fit next to the name: use the menu */
+@media (max-width: 62rem) {
+  .nav-links { display: none; }
+  .menu-toggle { display: grid; }
+}
+@media (min-width: 62.01rem) {
+  .mobile-menu { display: none !important; }
+}
+@media (max-width: 30rem) {
+  /* small phones: dark mode moves into the menu to leave room for EN / ไทย */
+  .nav-tools > .theme-toggle { display: none; }
+  .brand { font-size: 1.05rem; }
+}
+
+/* Comfortable tap targets (44px) on touch screens */
+@media (pointer: coarse) {
+  .lang-switch button { min-width: 2.75rem; min-height: 2.75rem; }
+  .lang-sep { display: none; }
+  .theme-toggle,
+  .menu-toggle { width: 2.75rem; height: 2.75rem; }
+  .lightbox-btn { width: 3rem; height: 3rem; }
+  .btn,
+  .link-arrow { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  .brand { padding-block: .6rem; }
+  .site-footer a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  /* the email keeps its underline where it is; an invisible pad makes it easier to tap */
+  .contact-email::before { content: ""; position: absolute; inset: -.55rem -.25rem; }
+}
+
+/* ---------- Two languages ---------- */
+/* show only the language that's switched on */
+html:not([data-lang="th"]) [data-l="th"],
+html[data-lang="th"] [data-l="en"] { display: none !important; }
+
+/* Thai needs a little more room for vowels and tone marks above and below */
+:root[data-lang="th"] h2 { line-height: 1.35; letter-spacing: 0; }
+:root[data-lang="th"] .entry-title { line-height: 1.45; }
+:root[data-lang="th"] .role-line { line-height: 1.6; }
+:root[data-lang="th"] .tags li:not(:last-child)::after { content: " · "; }
+:root[data-lang="th"] .note-hero { margin-top: 1rem; }
+/* Thai handwriting (Sriracha) runs larger than Caveat */
+.note [lang="th"],
+.sticky-label [lang="th"],
+.photo-label [lang="th"] { font-size: .8em; font-weight: 400; }
+
+/* The language switch: a yellow ink sheet with the greeting (see i18n.js) */
+.lang-sweep {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: .4rem;
+  padding: 1rem;
+  background: var(--crown);
+  color: var(--navy);
+  pointer-events: none;
+  visibility: hidden;
+}
+.lang-sweep.is-active { visibility: visible; }
+.lang-sweep-word {
+  font-family: var(--hand);
+  font-size: clamp(3.5rem, 13vw, 9rem);
+  font-weight: 600;
+  line-height: 1.15;
+  rotate: -4deg;
+}
+.lang-sweep-word:lang(th) { font-size: clamp(3rem, 11vw, 7.5rem); font-weight: 400; }
+.lang-sweep-line {
+  width: min(70vw, 22rem);
+  height: 1.1rem;
+  margin-top: -.6rem;
+  overflow: visible;
+  rotate: -3deg;
+  fill: none;
+  stroke: var(--queen);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.lang-sweep-line path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.lang-sweep-sub {
+  margin-top: .6rem;
+  font: 600 1.1rem/1 var(--text);
+  letter-spacing: .06em;
+  opacity: 0;
+}
+
+/* the button you pressed does a little hop */
+.lang-switch button.is-popping { animation: lang-pop .55s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes lang-pop {
+  0%   { transform: none; }
+  40%  { transform: translateY(-4px) scale(1.25) rotate(-6deg); }
+  100% { transform: none; }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(3rem, 7vw, 5rem);
+  overflow-x: clip; /* a snapshot being shuffled never makes the page scroll sideways */
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 8.4vw, 5.75rem);
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  overflow-wrap: break-word;
+}
+
+.role-line {
+  max-width: 34ch;
+  text-wrap: balance;
+  margin-top: 1.6rem;
+  color: var(--ink-2);
+  font-size: clamp(1.25rem, 2.3vw, 1.5rem);
+  line-height: 1.45;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.25rem;
+  color: var(--ink-3);
+}
+
+/* The sticky note */
+.sticky {
+  position: relative;
+  justify-self: end;
+  width: min(100%, 19rem);
+  padding: 2rem 1.6rem 1.7rem;
+  border-radius: 2px 2px 4px 18px / 2px 2px 4px 8px;
+  background: var(--crown);
+  color: var(--navy);
+  box-shadow: var(--shadow);
+  rotate: -2.5deg;
+  transition: rotate .45s var(--ease-out), translate .45s var(--ease-out);
+}
+.sticky::before {
+  content: "";
+  position: absolute;
+  top: -.8rem;
+  left: 50%;
+  width: 5.5rem;
+  height: 1.6rem;
+  background: var(--tape);
+  box-shadow: 0 1px 2px rgb(0 0 0 / .08);
+  transform: translateX(-50%) rotate(3deg);
+}
+@media (hover: hover) {
+  .sticky:hover { rotate: -.5deg; translate: 0 -4px; }
+}
+.sticky-label {
+  font-family: var(--hand);
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.greeting { margin: .7rem 0 1rem; }
+.greeting-word {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 4.6vw, 3.3rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -.02em;
+  white-space: nowrap;
+}
+.greeting-word.is-writing { animation: write-on .9s var(--ease-out); }
+@keyframes write-on {
+  from { clip-path: inset(-60% 100% -60% -20%); }
+  to   { clip-path: inset(-60% -20% -60% -20%); }
+}
+.lang-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.2rem;
+  list-style: none;
+  font-size: 1.1rem;
+}
+.lang-chips li { position: relative; padding: 0 .1rem; }
+.lang-chips li.is-active { font-weight: 600; }
+.lang-chips .scribble { stroke: var(--queen); }
+.lang-chips li:not(.is-active) .scribble { opacity: 0; }
+
+/* Profile snapshot with the sticky note stuck over its corner */
+.hero-collage {
+  display: grid;
+  justify-self: end;
+  width: min(100%, 21rem);
+}
+/* the snapshots lie in a small pile, all in the same spot; data-pos says
+   where each one is: 0 = on top, 1 and 2 = peeking out underneath,
+   3 = further down the pile (out of sight). snaps.js shuffles them. */
+.snap-stack {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  justify-self: end;
+  width: 15.5rem;
+}
+/* one piece of tape holds the whole pile down */
+.snap-stack::before {
+  content: "";
+  position: absolute;
+  z-index: 7;
+  top: -.7rem;
+  left: 50%;
+  width: 4.2rem;
+  height: 1.3rem;
+  background: var(--tape);
+  box-shadow: 0 1px 2px rgb(0 0 0 / .1);
+  transform: translateX(-50%) rotate(-5deg);
+  pointer-events: none;
+}
+.portrait {
+  grid-area: 1 / 1;
+  margin: 0;
+  padding: .55rem .55rem 2.4rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  rotate: 3deg;
+  transition:
+    rotate .75s var(--ease-out) var(--snap-delay, 0s),
+    translate .75s var(--ease-out) var(--snap-delay, 0s),
+    opacity .5s ease var(--snap-delay, 0s);
+}
+.snap[data-pos="0"] { z-index: 4; }
+.snap[data-pos="1"] { z-index: 3; rotate: -4deg; translate: -.55rem .3rem; }
+.snap[data-pos="2"] { z-index: 2; rotate: 8deg;  translate: .5rem .45rem; }
+.snap[data-pos="3"] { z-index: 1; rotate: 8deg;  translate: .5rem .45rem; opacity: 0; }
+.snap-stack.is-shuffling .snap { --snap-delay: .18s; }
+.snap.is-leaving { transition: none; } /* snaps.js animates this one itself */
+/* only the top photo's caption shows (the others would peek out underneath) */
+.snap:not([data-pos="0"]):not(.is-leaving) .photo-label { visibility: hidden; }
+/* the whole pile is one big button: tap or click for the next photo */
+.snap-next {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.snap-next:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+/* the label sits on the side the sticky note doesn't cover */
+.portrait .photo-label {
+  overflow: visible;
+  padding-right: .25rem;
+  font-size: 1.3rem;
+  text-align: right;
+  text-overflow: clip;
+}
+/* pointing at the pile straightens the top photo and fans out the ones below */
+@media (hover: hover) {
+  .snap-stack:hover .snap[data-pos="0"] { rotate: 0deg; translate: 0 -4px; }
+  .snap-stack:hover .snap[data-pos="1"] { rotate: -8deg; translate: -1.1rem .2rem; }
+  .snap-stack:hover .snap[data-pos="2"] { rotate: 12deg; translate: 1rem .35rem; }
+}
+.hero-collage .sticky {
+  z-index: 1;
+  justify-self: start;
+  width: min(100%, 15.5rem);
+  margin: -3.4rem 0 0 -3rem;
+}
+.hero-collage .lang-chips { column-gap: .9rem; }
+
+/* Below ~990px the hero stacks: text first, then the collage, with the
+   sticky note on the snapshot's other corner (label moves to the left) */
+@media (max-width: 62rem) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .sticky { justify-self: start; }
+  .hero-collage { justify-self: start; width: min(100%, 22rem); }
+  .snap-stack { justify-self: start; width: 12.5rem; margin-left: .6rem; }
+  .portrait .photo-label { text-align: left; }
+  .hero-collage .sticky { justify-self: end; width: min(100%, 15.25rem); margin: -4rem 0 0; }
+}
+/* tablets: same arrangement, a bit bigger */
+@media (min-width: 40rem) and (max-width: 62rem) {
+  .hero-collage { width: 28rem; }
+  .snap-stack { width: 15.5rem; }
+  .hero-collage .sticky { width: 16rem; margin-top: -5rem; }
+}
+
+/* ---------- Sections ---------- */
+.section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.section + .section { border-top: 1px solid var(--line); }
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(10rem, 15rem) minmax(0, 1fr);
+  gap: 2rem clamp(2rem, 5vw, 4rem);
+}
+.section-title {
+  position: sticky;
+  top: 6rem;
+  align-self: start;
+}
+h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.6vw, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+.section-title h2 { position: relative; display: inline-block; }
+
+@media (max-width: 54rem) {
+  .split { grid-template-columns: 1fr; }
+  .section-title { position: static; margin-bottom: .6rem; }
+}
+
+/* About */
+.prose { display: grid; gap: 1.1rem; max-width: 60ch; font-size: 1.2rem; }
+.prose p:last-child { color: var(--ink-2); }
+
+/* Entries (experience, education, leadership) */
+.entry { padding: 1.9rem 0; border-top: 1px solid var(--line); }
+.entry:first-child { padding-top: 0; border-top: 0; }
+.entry:last-child { padding-bottom: 0; }
+
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .2rem 2rem;
+}
+.entry-head > div { flex: 1 1 22rem; min-width: 0; }
+.entry-title { font-size: 1.25rem; font-weight: 600; line-height: 1.3; }
+.title-aside { font-weight: 400; color: var(--ink-2); }
+.entry-org { margin-top: .15rem; color: var(--ink-2); font-style: italic; }
+.entry-note { color: var(--ink-3); font-size: .98rem; }
+.entry-when {
+  flex: none;
+  color: var(--ink-3);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.entry-points {
+  display: grid;
+  gap: .45rem;
+  max-width: 66ch;
+  margin-top: .9rem;
+  padding-left: 1.3rem;
+  color: var(--ink-2);
+  list-style: none;
+}
+/* en-dash bullets as a hanging indent (no positioning, so the PDF's text order stays right) */
+.entry-points li::before {
+  content: "–";
+  display: inline-block;
+  width: 1.2rem;
+  margin-left: -1.2rem;
+  color: var(--ink-3);
+}
+
+/* Key achievements: a real highlighter stroke, uneven at both ends */
+.entry-points strong {
+  margin: 0 -.25em;
+  padding: 0 .25em;
+  border-radius: .7em .25em .6em .3em;
+  color: var(--navy);
+  background-image:
+    linear-gradient(104deg,
+      transparent .9%,
+      color-mix(in srgb, var(--crown) 95%, transparent) 2.4%,
+      color-mix(in srgb, var(--crown) 82%, transparent) 5.8%,
+      color-mix(in srgb, var(--crown) 76%, transparent) 93%,
+      color-mix(in srgb, var(--crown) 92%, transparent) 96%,
+      transparent 98%),
+    linear-gradient(183deg,
+      transparent 0%,
+      color-mix(in srgb, var(--crown) 45%, transparent) 7.9%,
+      transparent 15%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* the award gets a pen circle instead (on wider screens) */
+@media (min-width: 48rem) {
+  .entry-points strong.circled {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    background: none;
+    color: var(--ink);
+  }
+}
+@media (max-width: 47.99rem) {
+  .circled > .scribble { display: none; }
+}
+
+/* Entries with a logo (education) */
+.entry.has-logo {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  gap: 0 1.4rem;
+  align-items: start;
+}
+.entry-logo {
+  display: block;
+  width: 4.25rem;
+  height: 4.25rem;
+  padding: .3rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff; /* logos are made for white */
+  object-fit: contain;
+}
+@media (max-width: 40rem) {
+  .entry.has-logo { grid-template-columns: 3.25rem minmax(0, 1fr); gap: 0 .9rem; }
+  .entry-logo { width: 3.25rem; height: 3.25rem; padding: .2rem; }
+}
+
+/* ---------- Photos: printed snapshots with tape ---------- */
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 1.1rem;
+  margin-top: 2rem;
+  padding: .4rem .2rem 0;
+}
+.photo {
+  position: relative;
+  display: block;
+  flex: none;
+  padding: .45rem .45rem 2.1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  rotate: var(--tilt, 0deg);
+  cursor: zoom-in;
+  transition: rotate .45s var(--ease-out), transform .45s var(--ease-out);
+}
+.photo img {
+  display: block;
+  width: auto;
+  height: 8.5rem;
+  aspect-ratio: var(--ar);
+  object-fit: cover;
+}
+.photo::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -.6rem;
+  left: 50%;
+  width: 3.4rem;
+  height: 1.15rem;
+  background: var(--tape);
+  box-shadow: 0 1px 2px rgb(0 0 0 / .1);
+  transform: translateX(-50%) rotate(-4deg);
+}
+.photo-label {
+  position: absolute;
+  right: .5rem;
+  bottom: .3rem;
+  left: .5rem;
+  overflow: hidden;
+  color: #2A2F45;
+  font-family: var(--hand);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (hover: hover) {
+  .photo:hover { z-index: 2; rotate: 0deg; transform: translateY(-5px) scale(1.03); }
+}
+/* a single snapshot can be a bit bigger */
+.gallery-single .photo img { height: 12rem; }
+/* documents need to be big enough to recognise at a glance */
+.gallery-docs .photo img { height: 11rem; }
+@media (max-width: 40rem) {
+  .gallery-docs .photo img { height: 8rem; }
+}
+@media (max-width: 40rem) {
+  .photo img { height: 7rem; }
+  .gallery-single .photo img { height: 10rem; }
+  .photo-label { font-size: 1.05rem; }
+}
+/* ---------- App tour: the Chaba Chaba video on a phone ---------- */
+.app-demo {
+  display: flex;
+  align-items: center;
+  gap: 1rem 1.6rem;
+  margin: 2rem 0 0;
+  padding-left: .5rem;
+}
+.phone {
+  position: relative;
+  flex: none;
+  width: 11.5rem;
+  rotate: -2deg;
+  transition: rotate .45s var(--ease-out), transform .45s var(--ease-out);
+}
+/* the video already shows the phone's frame; rounding the corners
+   trims off the background around it */
+.phone-screen {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 480 / 1006;
+  border-radius: 18% / 8.6%;
+  background: #121212;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .phone:hover { rotate: 0deg; transform: translateY(-4px); }
+}
+/* play / pause: a round yellow sticker on the phone's edge */
+.phone-play {
+  position: absolute;
+  right: -1rem;
+  bottom: 3.5rem;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--crown);
+  color: var(--navy);
+  box-shadow: 0 2px 6px rgb(0 0 0 / .28);
+  rotate: 8deg;
+  cursor: pointer;
+  transition: scale .2s var(--ease-out);
+}
+.phone-play:hover { scale: 1.08; }
+.phone-play:active { scale: .94; }
+.phone-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.phone-play svg { width: 1.2rem; height: 1.2rem; fill: currentColor; }
+.phone-play[aria-pressed="true"] .icon-play,
+.phone-play[aria-pressed="false"] .icon-pause { display: none; }
+.keep { white-space: nowrap; }
+.note-demo { --rot: -3deg; width: auto; max-width: 15rem; font-size: 1.35rem; }
+@media (max-width: 40rem) {
+  .app-demo { gap: 1rem 1.25rem; margin-top: 1.5rem; }
+  .phone { width: 9.75rem; }
+  .note-demo { font-size: 1.2rem; }
+}
+
+/* the viewer hides next/previous for a single photo */
+.lightbox.is-single .lightbox-prev,
+.lightbox.is-single .lightbox-next,
+.lightbox.is-single .lightbox-count { display: none; }
+
+/* ---------- Skills ---------- */
+.skill-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem 2.5rem;
+}
+.skill-group h3 { font-size: 1.1rem; font-weight: 600; }
+.tags { margin-top: .35rem; color: var(--ink-2); list-style: none; }
+.tags li { display: inline; }
+.tags li:not(:last-child)::after { content: ", "; }
+
+.facts { margin-top: 2.6rem; border-top: 1px solid var(--line); }
+.facts > div {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: .3rem 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.facts dt { font-weight: 600; }
+.facts dd { color: var(--ink-2); }
+
+@media (max-width: 40rem) {
+  .skill-groups { grid-template-columns: 1fr; }
+  .facts > div { grid-template-columns: 1fr; }
+}
+
+/* ---------- Contact ---------- */
+.contact-text { max-width: 44ch; color: var(--ink-2); font-size: 1.2rem; }
+.contact-email {
+  display: inline-block;
+  margin-top: 1.4rem;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 4.4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.75rem;
+  margin-top: 1.8rem;
+}
+.contact-meta { margin-top: 1.2rem; color: var(--ink-3); font-size: 1rem; }
+
+/* ---------- Footer ---------- */
+.site-footer { padding: 2rem 0 3rem; color: var(--ink-3); font-size: 1rem; }
+.site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+.site-footer a { text-decoration: none; }
+
+/* ---------- Journey line (scroll-drawn, see journey.js) ---------- */
+main { position: relative; }
+.journey {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+/* the pencil path still to travel */
+.journey-track {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink-3) 45%, var(--bg));
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 0 8;
+}
+/* the ink line that draws itself */
+.journey-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dashoffset 120ms linear;
+}
+.journey-node {
+  fill: var(--bg);
+  stroke: color-mix(in srgb, var(--ink-3) 45%, var(--bg));
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: fill .25s ease, stroke .25s ease;
+}
+.journey-node.is-chapter { stroke-width: 2.5; }
+.journey-node.is-reached { stroke: var(--accent); animation: journey-pop .45s cubic-bezier(.3, 1.5, .5, 1); }
+.journey-node.is-stop.is-reached { fill: var(--accent); }
+.journey-head { transition: transform 120ms linear, opacity .2s ease; }
+.journey-head.is-hidden { opacity: 0; }
+.journey-dot { fill: var(--queen); stroke: var(--bg); stroke-width: 2.5; }
+.journey-halo {
+  fill: var(--queen);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: journey-pulse 2.4s ease-out infinite;
+}
+@keyframes journey-pop {
+  0%   { transform: scale(.6); }
+  60%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+@keyframes journey-pulse {
+  0%   { transform: scale(.6); opacity: .35; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+/* small screens: make room on the left for the line */
+@media (max-width: 54rem) {
+  .has-journey .split { padding-left: calc(var(--gutter) + 1.75rem); }
+}
+
+/* ---------- Full-screen photo viewer ---------- */
+.lightbox {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: transparent;
+  color: #fff;
+  touch-action: pan-y pinch-zoom; /* sideways swipes go to the viewer, pinch-zoom still works */
+}
+.lightbox[open] { display: grid; place-items: center; }
+/* the page behind doesn't scroll while a photo is open */
+html:has(.lightbox[open]) { overflow: hidden; }
+.lightbox::backdrop {
+  background: rgb(12 11 10 / .9);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+html:has(.lightbox[open]) { overflow: hidden; }
+.lightbox-figure {
+  display: grid;
+  justify-items: center;
+  gap: .9rem;
+  padding: 4.5rem 1rem;
+}
+.lightbox-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(92vw, 1100px);
+  max-height: calc(100dvh - 11rem);
+  border: .5rem solid #F7F4EC;
+  border-bottom-width: 2.4rem;
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / .6);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.lightbox-caption {
+  max-width: 60ch;
+  color: #F3EFE8;
+  font-family: var(--hand);
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-align: center;
+}
+.lightbox-count {
+  position: absolute;
+  top: 1.4rem;
+  left: 1.5rem;
+  margin: 0;
+  color: rgb(255 255 255 / .7);
+  font-size: .95rem;
+  font-style: italic;
+}
+.lightbox-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / .25);
+  border-radius: 999px;
+  background: rgb(255 255 255 / .08);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color .2s ease, transform .3s var(--ease-out);
+}
+.lightbox-btn:hover { background: rgb(255 255 255 / .18); }
+.lightbox-btn svg { width: 1.25rem; height: 1.25rem; }
+.lightbox-close { top: 1rem; right: 1rem; }
+.lightbox-prev,
+.lightbox-next { top: 50%; margin-top: -1.45rem; }
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
+@media (max-width: 40rem) {
+  .lightbox-prev,
+  .lightbox-next { top: auto; bottom: 1rem; margin-top: 0; }
+  .lightbox-prev { left: calc(50% - 3.5rem); }
+  .lightbox-next { right: calc(50% - 3.5rem); }
+}
+.lightbox[open] .lightbox-figure { animation: lb-in .45s var(--ease-out); }
+.lightbox-img.is-swapping { animation: lb-swap .4s var(--ease-out); }
+@keyframes lb-in { from { opacity: 0; transform: scale(.94) translateY(12px) rotate(-1deg); } to { opacity: 1; transform: none; } }
+@keyframes lb-swap { from { opacity: .2; transform: scale(.98); } to { opacity: 1; transform: none; } }
+
+/* ==========================================================
+   Phones (up to 640px wide)
+   A type scale made for small screens: 16–17px reading text,
+   tighter headings and spacing, and arrangements that keep
+   lines long enough to read comfortably.
+   ========================================================== */
+@media (max-width: 40rem) {
+  body { font-size: 1.0625rem; line-height: 1.6; }
+
+  /* sections sit closer together */
+  .section { padding: 3rem 0; }
+  .split { gap: .25rem; }
+  h2 { font-size: 1.75rem; }
+  .section-title { margin-bottom: 1rem; }
+
+  /* hero */
+  .hero { padding: 2.25rem 0 2.75rem; }
+  .hero-grid { gap: 2.25rem; }
+  .hero h1 { font-size: clamp(2.6rem, 12vw, 3rem); }
+  .note-hero { font-size: 1.3rem; margin-left: .9rem; }
+  .role-line { margin-top: 1.1rem; font-size: 1.125rem; line-height: 1.5; }
+  .hero .actions { margin-top: 1.5rem; gap: .75rem 1.25rem; }
+  .btn { padding: .65rem 1.15rem; font-size: 1rem; }
+  .link-arrow { font-size: 1rem; }
+
+  /* a more compact collage: smaller snapshot and note, overlapping more */
+  .snap-stack { width: 11.5rem; }
+  .portrait { padding: .45rem .45rem 2.1rem; }
+  .portrait .photo-label { font-size: 1.2rem; }
+  .hero-collage .sticky { width: 13rem; margin-top: -5.5rem; padding: 1.5rem 1.15rem 1.2rem; }
+  .sticky-label { font-size: 1.3rem; }
+  .greeting { margin: .45rem 0 .75rem; }
+  .greeting-word { font-size: 2.15rem; }
+  .lang-chips { font-size: .95rem; column-gap: .7rem; }
+
+  /* about */
+  .prose { font-size: 1.0625rem; gap: .9rem; }
+
+  /* entries: the date moves above the title as a small line */
+  .entry { padding: 1.5rem 0; }
+  .entry-head { flex-direction: column; align-items: flex-start; gap: .1rem; }
+  .entry-head > div { flex: none; }
+  .entry-when { order: -1; font-size: .875rem; }
+  .entry-title { font-size: 1.125rem; }
+  .entry-org { font-size: .95rem; }
+  .entry-note { font-size: .875rem; }
+  .entry-points { gap: .55rem; margin-top: .75rem; font-size: 1rem; line-height: 1.55; }
+  .note-inline { font-size: 1.2rem; }
+  .gallery-note { font-size: 1.15rem; }
+
+  /* education: logo beside the heading, bullets use the full width below */
+  .entry.has-logo { grid-template-columns: 2.75rem minmax(0, 1fr); column-gap: .85rem; }
+  .entry.has-logo .entry-main { display: contents; }
+  .entry.has-logo .entry-head { grid-column: 2; }
+  .entry.has-logo .entry-points { grid-column: 1 / -1; }
+  .entry-logo { width: 2.75rem; height: 2.75rem; padding: .2rem; }
+
+  /* skills */
+  .skill-groups { gap: 1.25rem; }
+  .skill-group h3 { font-size: 1rem; }
+  .tags { font-size: 1rem; line-height: 1.55; }
+  .facts { margin-top: 1.75rem; }
+  .facts > div { gap: .15rem; padding: .85rem 0; }
+  .facts dt { font-size: .95rem; }
+  .facts dd { font-size: .95rem; line-height: 1.55; }
+
+  /* contact */
+  .contact-text { font-size: 1.0625rem; }
+  .contact-email { margin-top: 1.1rem; font-size: 1.4rem; }
+  .contact-links { margin-top: 1.25rem; }
+  .contact-meta { font-size: .875rem; }
+
+  .site-footer { font-size: .875rem; }
+}
+
+/* the smallest phones: the sticky note sits below the snapshot instead of over it */
+@media (max-width: 22rem) {
+  .hero-collage .sticky { justify-self: start; margin-top: 1rem; }
+}
+
+/* ==========================================================
+   Motion (see motion.js)
+   Hidden "before" states only apply when <html> has .motion,
+   which is never set for visitors who prefer reduced motion.
+   ========================================================== */
+
+/* Pen strokes draw themselves */
+.motion .scribble path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.motion .is-in .scribble path,
+.motion.is-loaded .hero .scribble path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s var(--ease-out) var(--draw, 450ms);
+}
+.hero .u-sketch   { --draw: 1500ms; }
+.note-hero        { --draw: 1250ms; }
+.note             { --draw: 900ms; }
+.circled          { --draw: 700ms; }
+
+/* language chips: the current language gets circled, the old one un-circled */
+.motion .lang-chips li .scribble { opacity: 1; }
+.motion.is-loaded .hero .lang-chips li .scribble path {
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset .3s ease;
+}
+.motion.is-loaded .hero .lang-chips li.is-active .scribble path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset .8s var(--ease-out) .15s;
+}
+
+/* Handwritten notes are "written" left to right */
+.motion .note { clip-path: inset(-60% 100% -60% -20%); }
+.motion .is-in .note {
+  clip-path: inset(-60% -20% -60% -20%);
+  transition: clip-path 1.1s ease calc(var(--d, 0ms) + 800ms);
+}
+.motion.is-loaded .note-hero {
+  clip-path: inset(-60% -20% -60% -20%);
+  transition: clip-path 1.1s ease 1.3s;
+}
+
+/* Hero entrance */
+.motion .role-line,
+.motion .hero .actions { opacity: 0; transform: translateY(16px); }
+.motion.is-loaded .role-line,
+.motion.is-loaded .hero .actions {
+  opacity: 1;
+  transform: none;
+  transition: opacity .9s ease var(--enter, 0ms), transform 1.1s var(--ease-out) var(--enter, 0ms);
+}
+.role-line     { --enter: 650ms; }
+.hero .actions { --enter: 820ms; }
+
+/* the sticky note is slapped on */
+/* the snapshot is dropped on first, then the sticky note slapped over it */
+.motion .snap-stack { opacity: 0; transform: translateY(-32px) rotate(8deg); }
+.motion.is-loaded .snap-stack {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .5s ease .3s,
+    transform 1s cubic-bezier(.2, 1.4, .4, 1) .3s;
+}
+/* ...the photos underneath fan out from behind the top one */
+.motion:not(.is-loaded) .snap:not([data-pos="0"]) { rotate: 3deg; translate: 0 0; }
+.motion .snap-stack:not(.is-ready) .snap { --snap-delay: 1.1s; }
+/* ...the photo then develops like an instant photo: pale and washed out
+   at first, slowly coming into full colour */
+.motion .portrait img {
+  filter: sepia(.5) saturate(.15) brightness(1.75) contrast(.55) blur(1.5px);
+}
+.motion.is-loaded .portrait img {
+  filter: none;
+  transition: filter 2.6s cubic-bezier(.4, 0, .2, 1) 1.1s;
+}
+/* ..."that's me!" is written on once it has developed */
+.motion .portrait .photo-label { clip-path: inset(-60% 100% -60% -20%); }
+.motion.is-loaded .portrait .photo-label {
+  clip-path: inset(-60% -20% -60% -20%);
+  transition: clip-path 1s ease 2.9s;
+}
+/* ...and the whole collage sways very gently, as if pinned to a board */
+.motion.is-loaded .hero-collage {
+  transform-origin: 62% 0;
+  animation: collage-sway 9s ease-in-out 3.4s infinite;
+}
+@keyframes collage-sway {
+  0%, 100% { rotate: 0deg; }
+  25%      { rotate: .8deg; }
+  75%      { rotate: -.8deg; }
+}
+
+.motion .sticky { opacity: 0; transform: translateY(-28px) rotate(-7deg); }
+.motion.is-loaded .sticky {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .5s ease .75s,
+    transform .9s cubic-bezier(.2, 1.5, .4, 1) .75s,
+    rotate .45s var(--ease-out),
+    translate .45s var(--ease-out);
+}
+
+/* the name rises letter by letter */
+.word { display: inline-block; white-space: nowrap; }
+.motion .word {
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 .04em .16em;
+  margin: 0 -.04em -.16em;
+}
+.motion .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%) rotate(7deg);
+  transform-origin: 0% 100%;
+}
+.motion .hero h1:not(.is-split) { opacity: 0; }
+.hero h1 .char { --cd: calc(150ms + var(--i, 0) * 30ms); }
+.motion.is-loaded .hero h1 .char {
+  opacity: 1;
+  transform: none;
+  transition: transform 1.1s var(--ease-out) var(--cd), opacity .5s ease var(--cd);
+}
+/* afterwards, letters hop and take a pen colour under the cursor */
+.motion .hero h1.is-ready .word { overflow: visible; }
+@media (hover: hover) and (pointer: fine) {
+  .motion.is-loaded .hero h1.is-ready .char { transition: transform .45s var(--ease-out), color .3s ease; }
+  .motion.is-loaded .hero h1.is-ready .char:hover { color: var(--c, var(--accent)); transform: translateY(-.1em) rotate(-4deg); }
+  .motion.is-loaded .hero h1.is-ready .char:hover + .char,
+  .motion.is-loaded .hero h1.is-ready .char:has(+ .char:hover) { transform: translateY(-.045em); }
+}
+
+/* Scroll reveals */
+.motion :is(.prose > p, .entry, .skill-group, .facts > div, .contact-block):not(.is-in) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.motion :is(.prose > p, .entry, .skill-group, .facts > div, .contact-block).is-in:not(.is-done) {
+  transition: opacity .9s ease var(--d, 0ms), transform 1.1s var(--ease-out) var(--d, 0ms);
+}
+
+/* bullets follow one by one */
+.motion .entry-points li { opacity: 0; transform: translateX(-8px); }
+.motion .is-in .entry-points li {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .6s ease calc(var(--d, 0ms) + 250ms + var(--i, 0) * 70ms),
+    transform .7s var(--ease-out) calc(var(--d, 0ms) + 250ms + var(--i, 0) * 70ms);
+}
+
+/* the highlighter sweeps across */
+.motion .entry-points strong { background-size: 0% 100%; }
+.motion .is-in .entry-points strong {
+  background-size: 100% 100%;
+  transition: background-size 1s var(--ease-out) calc(var(--d, 0ms) + 650ms + var(--i, 0) * 70ms);
+}
+
+/* the app-tour phone slides up into place */
+.motion .phone { opacity: 0; translate: 0 24px; }
+.motion .is-in .phone {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity .6s ease calc(var(--d, 0ms) + 500ms),
+    translate .9s cubic-bezier(.2, 1.3, .4, 1) calc(var(--d, 0ms) + 500ms),
+    rotate .45s var(--ease-out),
+    transform .45s var(--ease-out);
+}
+
+/* snapshots drop onto the page one by one */
+.motion .photo { opacity: 0; translate: 0 -16px; }
+.motion .is-in .photo {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity .5s ease calc(var(--d, 0ms) + 450ms + var(--i, 0) * 120ms),
+    translate .7s cubic-bezier(.2, 1.4, .4, 1) calc(var(--d, 0ms) + 450ms + var(--i, 0) * 120ms),
+    rotate .45s var(--ease-out),
+    transform .45s var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ==========================================================
+   Print / PDF — prints as a clean one-column resume
+   ========================================================== */
+@media print {
+  @page { size: A4; margin: 13mm 15mm; }
+  body::before, body::after { display: none !important; }
+
+  :root,
+  :root[data-theme="dark"] {
+    color-scheme: light;
+    --bg: #fff; --ink: #000; --ink-2: #222; --ink-3: #555;
+    --line: #bbb; --accent: #000;
+  }
+
+  body { background: #fff; font-size: 9.5pt; line-height: 1.4; }
+  a { text-decoration: none; }
+  .wrap { max-width: none; padding: 0; }
+
+  .nav, .skip, .actions, .role-line, .note, .sticky, .scribble, .gallery, .app-demo,
+  .lightbox, .lang-sweep, .hero-collage, .contact, .site-footer, .journey { display: none !important; }
+
+  .hero .eyebrow.print-block {
+    display: block !important;
+    margin: 0 0 4pt;
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .hero .hero-meta.print-block {
+    display: flex !important;
+    gap: 0 14pt;
+    margin-top: 5pt;
+    color: #222;
+    font-size: 9pt;
+  }
+
+  .hero { padding: 0 0 6pt; }
+  .hero-grid { display: block; }
+  .hero h1 { font-size: 24pt; letter-spacing: -.01em; }
+
+  .section { padding: 8pt 0 2pt; border-top: 1px solid #bbb; }
+  .split { display: block; padding-left: 0 !important; }
+  .section-title { position: static; margin-bottom: 5pt; break-after: avoid; page-break-after: avoid; }
+  h2 { font-size: 12.5pt; }
+  /* nothing positioned, so text comes out in reading order (ATS parsing) */
+  .section-title h2, .circled, .u-sketch, main { position: static; }
+
+  .prose { gap: 4pt; max-width: none; font-size: 9.5pt; }
+  .prose p:last-child { color: #222; }
+
+  .entry { padding: 5pt 0; border-top: 0; break-inside: avoid; }
+  .entry:first-child { padding-top: 0; }
+  .entry.has-logo { display: block; }
+  .entry-logo { display: none !important; }
+  .entry-title { font-size: 10pt; }
+  .entry-org { margin-top: 0; }
+  .entry-when, .entry-note { font-size: 9pt; }
+  .entry-points { gap: 1.5pt; max-width: none; margin-top: 3pt; }
+  .entry-points strong,
+  .entry-points strong.circled {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    background: none !important;
+    color: #000;
+  }
+
+  .skill-groups { gap: 5pt 18pt; }
+  .skill-group { break-inside: avoid; }
+  .skill-group h3 { font-size: 9.5pt; }
+  .tags { margin-top: 2pt; font-size: 9.5pt; }
+
+  .facts { margin-top: 6pt; border-top: 0; }
+  .facts > div { grid-template-columns: 6.5rem 1fr; padding: 2pt 0; border-bottom: 0; break-inside: avoid; }
+
+  /* show everything instantly, whatever state the animations were in */
+  .motion * {
+    opacity: 1 !important;
+    transform: none !important;
+    translate: none !important;
+    rotate: none !important;
+    clip-path: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
