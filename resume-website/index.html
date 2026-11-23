@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiatthipat Mengsan — Thai–English Language &amp; Customer Service</title>
+  <meta name="description" content="Kiatthipat Mengsan — Thai–English translation, interpreting, English tutoring and international customer service. PGDip in English Language, University of Liverpool.">
+  <meta name="color-scheme" content="light dark">
+  <!-- phone browser bar colour; theme.js keeps it in step with the toggle -->
+  <meta name="theme-color" content="#F7F8FA">
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="Kiatthipat Mengsan">
+  <meta property="og:description" content="Thai–English language, translation and international customer service professional.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    /* Language: ?lang=th in the link, else the visitor's saved choice,
+       else Thai for Thai-language browsers, else English. */
+    (function (d) {
+      var l = null;
+      try { l = new URLSearchParams(location.search).get('lang'); } catch (e) {}
+      if (l !== 'th' && l !== 'en') { try { l = localStorage.getItem('lang'); } catch (e) {} }
+      if (l !== 'th' && l !== 'en') l = (navigator.language || '').toLowerCase().indexOf('th') === 0 ? 'th' : 'en';
+      d.setAttribute('data-lang', l);
+      d.lang = l;
+    })(document.documentElement);
+
+    /* Welcome screen: for visitors who haven't chosen a language yet
+       (nothing saved, no ?lang= in the link). ?welcome always shows it. */
+    (function (d) {
+      var q = null, saved = null;
+      try { q = new URLSearchParams(location.search); } catch (e) { return; }
+      try { saved = localStorage.getItem('lang'); } catch (e) {}
+      if (q.has('welcome') || (!q.get('lang') && saved !== 'th' && saved !== 'en')) d.classList.add('gate-on');
+    })(document.documentElement);
+
+    /* Theme: the visitor's saved choice, otherwise their system setting.
+       Runs before the page paints, so there is no flash of the wrong theme. */
+    (function (d) {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      d.setAttribute('data-theme', t);
+    })(document.documentElement);
+
+    /* Animations on, unless the visitor prefers reduced motion.
+       If motion.js fails to load, show everything after 3 s. */
+    (function (d) {
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.classList.add('motion');
+      setTimeout(function () { if (!window.__motionReady) d.classList.remove('motion'); }, 3000);
+    })(document.documentElement);
+  </script>
+  <script src="i18n.js" defer></script>
+  <script src="theme.js" defer></script>
+  <script src="nav.js" defer></script>
+  <script src="journey.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="gallery.js" defer></script>
+  <script src="snaps.js" defer></script>
+  <script src="video.js" defer></script>
+  <script src="gate.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Kiatthipat Mengsan",
+    "alternateName": ["Pat", "Night", "เกียรติภัทร์ เม่งซ่าน", "ภัทร์", "ไนท์"],
+    "image": "images/profile/sunset.jpg",
+    "jobTitle": "Thai–English Language, Translation and International Customer Service Professional",
+    "email": "mailto:kiatthipat@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Trang", "addressCountry": "TH" },
+    "sameAs": ["https://www.linkedin.com/in/kiatthipat-mengsan-0b6121152"],
+    "knowsLanguage": ["th", "en", "es"],
+    "alumniOf": [
+      { "@type": "CollegeOrUniversity", "name": "University of Liverpool" },
+      { "@type": "CollegeOrUniversity", "name": "Kasetsart University" },
+      { "@type": "CollegeOrUniversity", "name": "Ramkhamhaeng University" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!--
+    Every piece of text appears twice, side by side:
+      <span data-l="en">English</span><span data-l="th" lang="th">ภาษาไทย</span>
+    Only the language that's switched on is shown. To edit the Thai
+    version, change the data-l="th" text next to the English one.
+  -->
+
+  <!-- ============ WELCOME SCREEN ============
+       Shown first to visitors who haven't picked a language yet (gate.js).
+       It shows both languages at once, so it doesn't use data-l.
+       Add ?welcome to the address to see it again. -->
+  <div class="gate" id="welcome" role="dialog" aria-modal="true" aria-labelledby="gate-hello" aria-describedby="gate-ask" tabindex="-1">
+    <div class="gate-top">
+      <p class="gate-brand" aria-hidden="true"><svg class="logo" viewBox="-1 -1 79 38" aria-hidden="true" focusable="false"><path d="M0 0H6.5V16L18.5 0H26.5L13.8 16.6L27.5 36H19.6L9.7 21.6L6.5 25.8V36H0Z"/><path d="M30.5 0H39L48.5 27.5L58 0H66.5V36H60V12L52.1 36H44.9L37 12V36H30.5Z"/><circle class="logo-dot" cx="73.1" cy="32.4" r="3.6"/></svg></p>
+      <button class="theme-toggle gate-theme" type="button" data-theme-toggle aria-pressed="false" aria-label="Dark mode / โหมดมืด" title="Light or dark follows your device. Tap to switch.">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+      </button>
+    </div>
+    <div class="gate-inner">
+      <div class="gate-layout">
+        <div class="gate-main">
+          <p class="gate-hello" id="gate-hello">
+            <span class="line"><span lang="en">Hello.</span></span>
+            <span class="line line-th"><span lang="th">สวัสดี</span></span>
+          </p>
+          <p class="gate-intro">
+            <span lang="en">I’m Kiatthipat. Call me Pat or Night.</span>
+            <span lang="th">ยินดีต้อนรับ ชื่อเกียรติภัทร์นะ เรียกสั้น ๆ ว่า ภัทร์ หรือ ไนท์ ก็ได้</span>
+          </p>
+          <div class="gate-choose">
+            <p class="gate-ask label" id="gate-ask"><span lang="en">Choose a language</span> <span aria-hidden="true">·</span> <span lang="th">เลือกภาษา</span></p>
+            <ul class="gate-choices">
+              <li><a class="gate-choice" href="?lang=en" data-choose="en" lang="en" aria-label="English"><span class="gate-choice-name">English</span><span class="gate-hint label">Your device</span><span class="gate-arrow" aria-hidden="true">→</span></a></li>
+              <li><a class="gate-choice" href="?lang=th" data-choose="th" lang="th" aria-label="ภาษาไทย (Thai)"><span class="gate-choice-name">ภาษาไทย</span><span class="gate-hint label">ภาษาในเครื่องคุณ</span><span class="gate-arrow" aria-hidden="true">→</span></a></li>
+            </ul>
+          </div>
+          <p class="gate-foot">
+            <span lang="en">You can switch any time at the top of the page.</span>
+            <span lang="th">เปลี่ยนภาษาได้ทุกเมื่อที่ด้านบนของหน้า</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- the street photo behind the greeting: a band across the top on phones,
+         the right-hand side on wider screens. It drifts slowly, and with a
+         mouse it leans a little as the pointer moves (gate.js). -->
+    <figure class="gate-photo">
+      <div class="gate-photo-frame"><div class="gate-photo-drift"><img src="images/profile/street.jpg" alt="Kiatthipat (Pat) walking down a cobbled street between old brick warehouses in London" width="1125" height="1500" loading="lazy" decoding="async"></div></div>
+      <figcaption><span lang="en">That’s me</span><span aria-hidden="true">·</span><span lang="th">ตัวจริงเอง</span></figcaption>
+    </figure>
+  </div>
+
+  <a class="skip" href="#main"><span data-l="en">Skip to content</span><span data-l="th" lang="th">ข้ามไปยังเนื้อหา</span></a>
+
+  <nav class="nav" aria-label="Main" data-th-aria-label="เมนูหลัก">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="Kiatthipat Mengsan" data-th-aria-label="เกียรติภัทร์ เม่งซ่าน"><svg class="logo" viewBox="-1 -1 79 38" aria-hidden="true" focusable="false"><path d="M0 0H6.5V16L18.5 0H26.5L13.8 16.6L27.5 36H19.6L9.7 21.6L6.5 25.8V36H0Z"/><path d="M30.5 0H39L48.5 27.5L58 0H66.5V36H60V12L52.1 36H44.9L37 12V36H30.5Z"/><circle class="logo-dot" cx="73.1" cy="32.4" r="3.6"/></svg></a>
+      <ul class="nav-links">
+        <li><a href="#about"><span data-l="en">About</span><span data-l="th" lang="th">เกี่ยวกับ</span></a></li>
+        <li><a href="#experience"><span data-l="en">Experience</span><span data-l="th" lang="th">ประสบการณ์</span></a></li>
+        <li><a href="#education"><span data-l="en">Education</span><span data-l="th" lang="th">การศึกษา</span></a></li>
+        <li><a href="#leadership"><span data-l="en">Leadership</span><span data-l="th" lang="th">กิจกรรม</span></a></li>
+        <li><a href="#skills"><span data-l="en">Skills</span><span data-l="th" lang="th">ทักษะ</span></a></li>
+        <li><a href="#contact"><span data-l="en">Contact</span><span data-l="th" lang="th">ติดต่อ</span></a></li>
+      </ul>
+      <div class="nav-tools">
+        <div class="lang-switch" role="group" aria-label="Language / ภาษา">
+          <button type="button" data-set-lang="en" lang="en" aria-pressed="true">EN</button>
+          <span class="lang-sep" aria-hidden="true">/</span>
+          <button type="button" data-set-lang="th" lang="th" aria-pressed="false">ไทย</button>
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Dark mode" data-th-aria-label="โหมดมืด" aria-pressed="false">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+        </button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu" data-th-aria-label="เมนู">
+          <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Phone menu (nav.js) -->
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <ul>
+        <li><a href="#about"><span data-l="en">About</span><span data-l="th" lang="th">เกี่ยวกับ</span></a></li>
+        <li><a href="#experience"><span data-l="en">Experience</span><span data-l="th" lang="th">ประสบการณ์</span></a></li>
+        <li><a href="#education"><span data-l="en">Education</span><span data-l="th" lang="th">การศึกษา</span></a></li>
+        <li><a href="#leadership"><span data-l="en">Leadership &amp; activities</span><span data-l="th" lang="th">ภาวะผู้นำและกิจกรรม</span></a></li>
+        <li><a href="#skills"><span data-l="en">Skills</span><span data-l="th" lang="th">ทักษะ</span></a></li>
+        <li><a href="#contact"><span data-l="en">Contact</span><span data-l="th" lang="th">ติดต่อ</span></a></li>
+      </ul>
+      <button class="menu-theme" type="button" data-theme-toggle aria-pressed="false">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+        <span data-l="en">Dark mode</span><span data-l="th" lang="th">โหมดมืด</span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- Journey line: drawn by journey.js as you scroll -->
+    <svg class="journey" aria-hidden="true" focusable="false">
+      <path class="journey-track"/>
+      <path class="journey-line"/>
+      <g class="journey-nodes"></g>
+      <g class="journey-head is-hidden">
+        <circle class="journey-halo" r="12"/>
+        <circle class="journey-dot" r="3"/>
+      </g>
+    </svg>
+
+    <!-- ============ HERO ============ -->
+    <header class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow"><span data-l="en">Thai–English language, translation &amp; international customer service</span><span data-l="th" lang="th">ภาษาไทย–อังกฤษ การแปล และงานบริการลูกค้าระดับนานาชาติ</span></p>
+          <h1 class="hero-name"><span data-l="en"><span class="line"><span>Kiatthipat</span></span> <span class="line"><span>Mengsan</span></span></span><span data-l="th" lang="th"><span class="line"><span>เกียรติภัทร์</span></span> <span class="line"><span>เม่งซ่าน</span></span></span></h1>
+          <p class="hero-name-alt"><span data-l="en" lang="th">เกียรติภัทร์ เม่งซ่าน</span><span data-l="th">Kiatthipat Mengsan</span></p>
+          <p class="hero-aka"><span data-l="en">Call me Pat or Night.</span><span data-l="th" lang="th">เรียกสั้น ๆ ว่า ภัทร์ หรือ ไนท์ ก็ได้</span></p>
+          <p class="role-line">
+            <span data-l="en">I translate, interpret, teach English and look after guests — in <em>Thai and English</em>.</span>
+            <span data-l="th" lang="th">งานแปล งานล่าม สอนภาษาอังกฤษ และดูแลลูกค้า — ได้ทั้ง<em>ภาษาไทยและอังกฤษ</em></span>
+          </p>
+          <!-- contact line: printed in the PDF only -->
+          <p class="hero-meta print-block">
+            <span class="meta-item"><span data-l="en">Trang, Thailand · open to relocation</span><span data-l="th" lang="th">ตรัง ประเทศไทย · พร้อมย้ายที่ทำงาน</span></span>
+            <span class="meta-item">kiatthipat@gmail.com</span>
+            <span class="meta-item">linkedin.com/in/kiatthipat-mengsan-0b6121152</span>
+          </p>
+          <div class="actions">
+            <a class="btn" href="mailto:kiatthipat@gmail.com"><span data-l="en">Email me</span><span data-l="th" lang="th">ส่งอีเมล</span></a>
+            <a class="link-arrow" href="resume.pdf" download="Kiatthipat_Mengsan_Resume.pdf" data-th-href="resume-th.pdf" data-th-download="Kiatthipat_Mengsan_Resume_TH.pdf"><span data-l="en">Download my resume</span><span data-l="th" lang="th">ดาวน์โหลดเรซูเม่</span> <span aria-hidden="true">↓</span></a>
+          </div>
+          <!-- languages: the greeting changes every few seconds (motion.js) -->
+          <div class="hero-langs">
+            <span class="greet" aria-hidden="true">Hello</span>
+            <ul class="lang-chips" aria-label="Languages" data-th-aria-label="ภาษาที่พูดได้">
+              <li class="is-active" data-lang="EN">English</li>
+              <li data-lang="TH" lang="th">ไทย</li>
+              <li data-lang="ES" lang="es">Español</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <!-- Photos: one at a time, cross-fading every few seconds (snaps.js);
+               a click or tap shows the next. To change one, swap the image and
+               its caption; to add one, copy a <figure> and update the numbers. -->
+          <div class="portrait">
+            <figure class="snap is-current">
+              <div class="snap-frame"><img src="images/profile/sunset.jpg" alt="Kiatthipat (Pat) smiling by a lake at sunset" data-th-alt="เกียรติภัทร์ (ภัทร์) ยิ้มอยู่ริมทะเลสาบตอนพระอาทิตย์ตก" width="520" height="650"></div>
+              <figcaption class="snap-cap"><span class="snap-num">01 / 10</span><span><span data-l="en">That’s me</span><span data-l="th" lang="th">ตัวจริงเอง</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/wood-room.jpg" alt="Pat standing in a wood-panelled room with stained-glass windows" data-th-alt="ภัทร์ ยืนอยู่ในห้องผนังไม้ที่มีหน้าต่างกระจกสี" width="520" height="650"></div>
+              <figcaption class="snap-cap"><span class="snap-num">02 / 10</span><span><span data-l="en">Smart casual</span><span data-l="th" lang="th">ลุคสุภาพ</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/library.jpg" alt="Pat and two friends posing in a wood-panelled library" data-th-alt="ภัทร์ กับเพื่อนสองคนโพสท่าในห้องสมุดผนังไม้" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">03 / 10</span><span><span data-l="en">Library crew</span><span data-l="th" lang="th">แก๊งห้องสมุด</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/london.jpg" alt="Pat in front of Buckingham Palace in London" data-th-alt="ภัทร์ ที่หน้าพระราชวังบักกิงแฮม ลอนดอน" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">04 / 10</span><span><span data-l="en">Hello, London</span><span data-l="th" lang="th">ลอนดอนจ้า</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/museum.jpg" alt="Pat leaning on a balcony inside a museum" data-th-alt="ภัทร์ ยืนพิงระเบียงในพิพิธภัณฑ์" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">05 / 10</span><span><span data-l="en">Museum day</span><span data-l="th" lang="th">เที่ยวมิวเซียม</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/wizard.jpg" alt="Pat in a pointed wizard hat, sitting at a wooden desk with a big open book" data-th-alt="ภัทร์ สวมหมวกพ่อมดทรงแหลม นั่งที่โต๊ะไม้พร้อมหนังสือเล่มใหญ่ที่เปิดอยู่" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">06 / 10</span><span><span data-l="en">Wizard for a day</span><span data-l="th" lang="th">เป็นพ่อมดหนึ่งวัน</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/work-family.jpg" alt="Pat in a red University Housing T-shirt, cheek to cheek with a smiling colleague" data-th-alt="ภัทร์ ในเสื้อยืดสีแดงของหอพักมหาวิทยาลัย ยืนแนบแก้มกับเพื่อนร่วมงานที่ยิ้มอยู่" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">07 / 10</span><span><span data-l="en">Work family</span><span data-l="th" lang="th">ครอบครัวที่ทำงาน</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/break.jpg" alt="Selfie of Pat with two University Housing colleagues on a sunny break" data-th-alt="ภัทร์ ถ่ายเซลฟี่กับเพื่อนร่วมงานหอพักมหาวิทยาลัยสองคนช่วงพักกลางแดด" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">08 / 10</span><span><span data-l="en">On a break</span><span data-l="th" lang="th">พักเบรกแป๊บ</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/lakeside.jpg" alt="Pat with two friends by a lake at sunset" data-th-alt="ภัทร์ กับเพื่อนสองคนริมทะเลสาบตอนพระอาทิตย์ตก" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">09 / 10</span><span><span data-l="en">Sunset with the boys</span><span data-l="th" lang="th">ยามเย็นกับแก๊งเพื่อน</span></span></figcaption>
+            </figure>
+            <figure class="snap" aria-hidden="true">
+              <div class="snap-frame"><img src="images/profile/edinburgh.jpg" alt="Pat and a friend making peace signs on a balcony above a grand museum hall in Edinburgh" data-th-alt="ภัทร์ กับเพื่อนชูสองนิ้วบนระเบียงเหนือโถงพิพิธภัณฑ์ในเอดินบะระ" width="520" height="650" loading="lazy"></div>
+              <figcaption class="snap-cap"><span class="snap-num">10 / 10</span><span><span data-l="en">Peace from Edinburgh</span><span data-l="th" lang="th">ส่งความสุขจากเอดินบะระ</span></span></figcaption>
+            </figure>
+            <button class="snap-next" type="button" aria-label="Show the next photo" data-th-aria-label="ดูรูปถัดไป"></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- A slow band of what I do, in both languages (decorative; motion.js / CSS) -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-group"><span class="mq" lang="en">Translation</span><span class="mq-dot"></span><span class="mq" lang="th">การแปล</span><span class="mq-dot"></span><span class="mq" lang="en">Interpreting</span><span class="mq-dot"></span><span class="mq" lang="th">งานล่าม</span><span class="mq-dot"></span><span class="mq" lang="en">English tutoring</span><span class="mq-dot"></span><span class="mq" lang="th">สอนภาษาอังกฤษ</span><span class="mq-dot"></span><span class="mq" lang="en">Customer service</span><span class="mq-dot"></span><span class="mq" lang="th">งานบริการลูกค้า</span><span class="mq-dot"></span><span class="mq" lang="en">Visa support</span><span class="mq-dot"></span><span class="mq" lang="th">เอกสารวีซ่า</span><span class="mq-dot"></span></div>
+        <div class="marquee-group"><span class="mq" lang="en">Translation</span><span class="mq-dot"></span><span class="mq" lang="th">การแปล</span><span class="mq-dot"></span><span class="mq" lang="en">Interpreting</span><span class="mq-dot"></span><span class="mq" lang="th">งานล่าม</span><span class="mq-dot"></span><span class="mq" lang="en">English tutoring</span><span class="mq-dot"></span><span class="mq" lang="th">สอนภาษาอังกฤษ</span><span class="mq-dot"></span><span class="mq" lang="en">Customer service</span><span class="mq-dot"></span><span class="mq" lang="th">งานบริการลูกค้า</span><span class="mq-dot"></span><span class="mq" lang="en">Visa support</span><span class="mq-dot"></span><span class="mq" lang="th">เอกสารวีซ่า</span><span class="mq-dot"></span></div>
+      </div>
+    </div>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" aria-labelledby="about-h">
+      <div class="wrap split">
+        <header class="section-title"><p class="section-num" aria-hidden="true">01</p><h2 id="about-h"><span data-l="en">About</span><span data-l="th" lang="th">เกี่ยวกับ</span></h2></header>
+        <div class="section-body">
+          <div class="prose">
+            <p><span data-l="en">I'm a Thai–English language and customer service professional with a Postgraduate Diploma in English Language from the University of Liverpool, a BA in English (Minor in Translation and Interpreting) and a Bachelor of Political Science in International Relations.</span><span data-l="th" lang="th">ทำงานด้านภาษาไทย–อังกฤษและงานบริการลูกค้า สำเร็จการศึกษาระดับประกาศนียบัตรบัณฑิต สาขาภาษาอังกฤษ จากมหาวิทยาลัยลิเวอร์พูล ศิลปศาสตรบัณฑิต สาขาวิชาภาษาอังกฤษ (วิชาโทการแปลและการล่าม) และรัฐศาสตรบัณฑิต สาขาวิชาความสัมพันธ์ระหว่างประเทศ</span></p>
+            <p><span data-l="en">My experience spans front-of-house hospitality in the United Kingdom, university residence services in the United States, and translation, English tutoring, academic writing support and interpreting in Thailand. I bring careful document handling, cross-cultural communication, research skills and calm, attentive service to international settings.</span><span data-l="th" lang="th">มีประสบการณ์งานบริการหน้าร้านในสหราชอาณาจักร งานบริการหอพักมหาวิทยาลัยในสหรัฐอเมริกา รวมถึงงานแปล สอนพิเศษภาษาอังกฤษ ให้คำปรึกษาด้านการเขียนเชิงวิชาการ และงานล่ามในประเทศไทย จุดเด่นคือความละเอียดรอบคอบในการจัดการเอกสาร การสื่อสารข้ามวัฒนธรรม ทักษะการค้นคว้าวิจัย และการให้บริการอย่างใจเย็นและเอาใจใส่ในบริบทนานาชาติ</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section class="section" id="experience" aria-labelledby="exp-h">
+      <div class="wrap split">
+        <header class="section-title"><p class="section-num" aria-hidden="true">02</p><h2 id="exp-h"><span data-l="en">Experience</span><span data-l="th" lang="th">ประสบการณ์</span></h2></header>
+        <div class="section-body">
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Front of House Staff</span><span data-l="th" lang="th">พนักงานบริการหน้าร้าน</span></h3>
+                <p class="entry-org"><span data-l="en">Chaba Chaba Thai Restaurant · Liverpool, United Kingdom</span><span data-l="th" lang="th">ร้านอาหารไทย Chaba Chaba · ลิเวอร์พูล สหราชอาณาจักร</span></p>
+              </div>
+              <p class="entry-when"><span data-l="en">May 2026 – Aug 2026</span><span data-l="th" lang="th">พ.ค. 2026 – ส.ค. 2026</span></p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Welcomed local and international diners, took dine-in and phone orders, and recommended dishes, drinks and desserts to support sales.</span><span data-l="th" lang="th">ต้อนรับลูกค้าทั้งชาวท้องถิ่นและชาวต่างชาติ รับออร์เดอร์ทั้งในร้านและทางโทรศัพท์ และแนะนำอาหาร เครื่องดื่ม และของหวานเพื่อช่วยเพิ่มยอดขาย</span></li>
+              <li><span data-l="en"><strong><mark class="hl">Built “Chaba Chaba”, a basic order-taking app</mark></strong>, on my own initiative to replace handwritten orders.</span><span data-l="th" lang="th"><strong><mark class="hl">สร้างแอปรับออร์เดอร์แบบพื้นฐาน “Chaba Chaba”</mark></strong> ขึ้นเองด้วยความริเริ่มส่วนตัว เพื่อใช้แทนการจดออร์เดอร์ด้วยลายมือ</span>
+                <span class="aside-note" aria-hidden="true"><span data-l="en">Made this one myself.</span><span data-l="th" lang="th">อันนี้ทำเองทั้งหมด</span></span></li>
+              <li><span data-l="en">Worked closely with kitchen and front-of-house colleagues to handle guest requests and keep service running smoothly at busy times.</span><span data-l="th" lang="th">ทำงานร่วมกับทีมครัวและทีมหน้าร้านอย่างใกล้ชิด เพื่อดูแลคำขอของลูกค้าและให้บริการเป็นไปอย่างราบรื่นในช่วงที่ลูกค้าหนาแน่น</span></li>
+            </ul>
+
+            <!-- A short silent tour of the app, shown on a phone. It plays by
+                 itself while on screen (see video.js); the button pauses it. -->
+            <figure class="app-demo">
+              <div class="phone">
+                <video class="phone-screen" controls muted loop playsinline preload="none" poster="images/chaba/walkthrough-poster.jpg" width="480" height="1006" aria-label="A 20-second tour of the Chaba Chaba app on a phone: setting up a table, adding dishes for each guest, reviewing the order and preparing the kitchen ticket" data-th-aria-label="วิดีโอ 20 วินาทีพาชมแอป Chaba Chaba บนโทรศัพท์: ตั้งค่าโต๊ะ เพิ่มอาหารให้ลูกค้าแต่ละคน ตรวจทานออร์เดอร์ และเตรียมใบสั่งอาหารสำหรับครัว">
+                  <source src="images/chaba/walkthrough.mp4" type="video/mp4">
+                  <a href="images/chaba/walkthrough.mp4">Watch the app tour (MP4)</a>
+                </video>
+              </div>
+              <figcaption class="app-demo-cap">
+                <span class="app-demo-title"><span data-l="en">A quick tour of the app</span><span data-l="th" lang="th">พาทัวร์แอปแบบสั้น ๆ</span></span>
+                <span><span data-l="en">20 seconds · no sound</span><span data-l="th" lang="th">20 วินาที · ไม่มีเสียง</span></span>
+                <button class="phone-play" type="button" data-playing="false" hidden>
+                  <span class="when-playing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><span data-l="en">Pause</span><span data-l="th" lang="th">หยุด</span></span>
+                  <span class="when-paused"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg><span data-l="en">Play</span><span data-l="th" lang="th">เล่น</span></span>
+                </button>
+              </figcaption>
+            </figure>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Front of House Staff</span><span data-l="th" lang="th">พนักงานบริการหน้าร้าน</span></h3>
+                <p class="entry-org"><span data-l="en">Spice Thai Restaurant, Castle Street · Liverpool, United Kingdom</span><span data-l="th" lang="th">ร้านอาหาร Spice Thai ถนน Castle Street · ลิเวอร์พูล สหราชอาณาจักร</span></p>
+              </div>
+              <p class="entry-when"><span data-l="en">Aug 2025 – Jun 2026</span><span data-l="th" lang="th">ส.ค. 2025 – มิ.ย. 2026</span></p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Supported service for 50–60 covers a day (up to 100 on match days), coordinating with colleagues at peak times.</span><span data-l="th" lang="th">ร่วมให้บริการลูกค้าวันละ 50–60 ที่ (สูงสุด 100 ที่ในวันที่มีการแข่งขัน) และประสานงานกับเพื่อนร่วมงานในช่วงเวลาเร่งด่วน</span></li>
+              <li><span data-l="en">Managed phone and walk-in reservations, seating, special requests and online orders; processed POS and card payments.</span><span data-l="th" lang="th">ดูแลการจองโต๊ะทางโทรศัพท์และลูกค้าวอล์กอิน การจัดที่นั่ง คำขอพิเศษ และออร์เดอร์ออนไลน์ รวมถึงรับชำระเงินผ่านระบบ POS และบัตร</span></li>
+              <li><span data-l="en">Served local and international guests, adapting communication to different needs; resolved enquiries and complaints calmly and was <strong><mark class="hl">mentioned in five-star customer reviews</mark></strong>.</span><span data-l="th" lang="th">ให้บริการลูกค้าทั้งชาวท้องถิ่นและชาวต่างชาติ โดยปรับวิธีสื่อสารให้เหมาะกับแต่ละคน ตอบข้อสงสัยและจัดการข้อร้องเรียนอย่างใจเย็น และ<strong><mark class="hl">ได้รับการกล่าวถึงในรีวิวห้าดาวจากลูกค้า</mark></strong></span></li>
+            </ul>
+            <div class="gallery gallery-single" role="group" aria-label="Photo from Liverpool" data-th-aria-label="ภาพจากลิเวอร์พูล">
+              <a class="photo" href="images/spice/group.jpg" style="--ar: 0.953; --tilt: 1.8deg; --i: 0" data-caption="Good times in Liverpool" data-th-caption="ช่วงเวลาดี ๆ ที่ลิเวอร์พูล">
+                <span class="photo-frame"><img src="images/spice/group-thumb.jpg" alt="A big group of people smiling and making peace signs, gathered in a cosy bar in Liverpool" data-th-alt="คนกลุ่มใหญ่ยิ้มและชูสองนิ้ว รวมตัวกันในบาร์บรรยากาศอบอุ่นที่ลิเวอร์พูล" width="610" height="640" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Liverpool nights</span><span data-l="th" lang="th">คืนที่ลิเวอร์พูล</span></span>
+              </a>
+            </div>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Residence Hall Facilities Custodian</span><span data-l="th" lang="th">พนักงานดูแลอาคารหอพักนักศึกษา</span></h3>
+                <p class="entry-org"><span data-l="en">University of Wisconsin–Madison (Lowell Center) · Madison, United States</span><span data-l="th" lang="th">มหาวิทยาลัยวิสคอนซิน–แมดิสัน (Lowell Center) · แมดิสัน สหรัฐอเมริกา</span></p>
+                <p class="entry-note"><span data-l="en">Work and Travel Programme</span><span data-l="th" lang="th">โครงการ Work and Travel</span></p>
+              </div>
+              <p class="entry-when"><span data-l="en">May 2024 – Aug 2024</span><span data-l="th" lang="th">พ.ค. 2024 – ส.ค. 2024</span></p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Followed safety, hygiene and cleaning procedures to keep residence halls clean, safe and welcoming for students and visitors.</span><span data-l="th" lang="th">ปฏิบัติตามขั้นตอนด้านความปลอดภัย สุขอนามัย และการทำความสะอาด เพื่อให้หอพักสะอาด ปลอดภัย และน่าอยู่สำหรับนักศึกษาและผู้มาเยือน</span></li>
+              <li><span data-l="en">Answered accommodation and facility enquiries from residents, students and visitors, and responded promptly to facilities-related needs.</span><span data-l="th" lang="th">ตอบคำถามเรื่องที่พักและสิ่งอำนวยความสะดวกจากผู้พักอาศัย นักศึกษา และผู้มาเยือน และตอบสนองความต้องการด้านอาคารสถานที่อย่างรวดเร็ว</span></li>
+              <li><span data-l="en"><strong><mark class="hl">Won the 2024 Innovation and Initiative Award</mark></strong> on a supervisor’s nomination, the only student recipient, for contributions beyond regular duties.</span><span data-l="th" lang="th"><strong><mark class="hl">ได้รับรางวัล Innovation and Initiative Award ปี 2024</mark></strong> จากการเสนอชื่อของหัวหน้างาน เป็นนักศึกษาเพียงคนเดียวที่ได้รับรางวัลนี้ จากผลงานที่เกินกว่าหน้าที่ประจำ</span>
+                <span class="aside-note" aria-hidden="true"><span data-l="en">The only student winner.</span><span data-l="th" lang="th">นักศึกษาคนเดียวที่ได้รางวัล</span></span></li>
+            </ul>
+            <div class="gallery" role="group" aria-label="Photos from UW–Madison, summer 2024" data-th-aria-label="ภาพจาก UW–Madison ฤดูร้อนปี 2024">
+              <a class="photo" href="images/uw/lake.jpg" style="--ar: 1.3333; --tilt: -2.5deg; --i: 0" data-caption="With the summer team by the lake in Madison" data-th-caption="กับทีมช่วงซัมเมอร์ ริมทะเลสาบในเมืองแมดิสัน">
+                <span class="photo-frame"><img src="images/uw/lake-thumb.jpg" alt="A group of colleagues posing under trees by the lake in Madison" data-th-alt="กลุ่มเพื่อนร่วมงานถ่ายรูปใต้ต้นไม้ริมทะเลสาบในเมืองแมดิสัน" width="600" height="450" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Madison, summer ’24</span><span data-l="th" lang="th">แมดิสัน ซัมเมอร์ ’24</span></span>
+              </a>
+              <a class="photo" href="images/uw/crew.jpg" style="--ar: 0.75; --tilt: 2deg; --i: 1" data-caption="The Residence Hall Facilities crew" data-th-caption="ทีมงาน Residence Hall Facilities">
+                <span class="photo-frame"><img src="images/uw/crew-thumb.jpg" alt="Residence Hall Facilities staff in red University Housing shirts, photographed from below in a huddle" data-th-alt="ทีมงาน Residence Hall Facilities ในเสื้อสีแดงของ University Housing ถ่ายจากมุมล่างขณะยืนล้อมวง" width="450" height="600" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">The crew</span><span data-l="th" lang="th">ทีมงาน</span></span>
+              </a>
+              <a class="photo" href="images/uw/award.jpg" style="--ar: 0.75; --tilt: -1.5deg; --i: 2" data-caption="Presenting a Certificate of Exemplary Award to my supervisor" data-th-caption="มอบประกาศนียบัตร Certificate of Exemplary Award ให้หัวหน้างาน">
+                <span class="photo-frame"><img src="images/uw/award-thumb.jpg" alt="Holding up a Certificate of Exemplary Award with a supervisor in the University Housing office" data-th-alt="ถือประกาศนียบัตร Certificate of Exemplary Award คู่กับหัวหน้างานในสำนักงาน University Housing" width="450" height="600" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Award day</span><span data-l="th" lang="th">วันมอบรางวัล</span></span>
+              </a>
+              <a class="photo" href="images/uw/team.jpg" style="--ar: 1.3333; --tilt: 2.5deg; --i: 3" data-caption="Team selfie in the University Housing office" data-th-caption="เซลฟี่ทีมงานในสำนักงาน University Housing">
+                <span class="photo-frame"><img src="images/uw/team-thumb.jpg" alt="Selfie of the University Housing team in red staff shirts in their office" data-th-alt="เซลฟี่ทีมงาน University Housing ในเสื้อสีแดงที่สำนักงาน" width="600" height="450" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Team selfie</span><span data-l="th" lang="th">เซลฟี่ทีม</span></span>
+              </a>
+            </div>
+            <p class="aside-note" aria-hidden="true"><span data-l="en">Click a photo to see it bigger.</span><span data-l="th" lang="th">คลิกที่รูปเพื่อดูภาพใหญ่</span></p>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Academic Writing Consultant</span><span data-l="th" lang="th">ที่ปรึกษาด้านการเขียนเชิงวิชาการ</span></h3>
+                <p class="entry-org"><span data-l="en">Kasetsart University Writing Clinic · Bangkok, Thailand</span><span data-l="th" lang="th">คลินิกการเขียน มหาวิทยาลัยเกษตรศาสตร์ · กรุงเทพฯ</span></p>
+              </div>
+              <p class="entry-when"><span data-l="en">Aug 2023 – Nov 2023</span><span data-l="th" lang="th">ส.ค. 2023 – พ.ย. 2023</span></p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Held one-to-one consultations with undergraduates from several faculties, adapting feedback to their disciplines and learning goals.</span><span data-l="th" lang="th">ให้คำปรึกษาแบบตัวต่อตัวแก่นิสิตปริญญาตรีจากหลายคณะ โดยปรับคำแนะนำให้เหมาะกับสาขาวิชาและเป้าหมายการเรียนรู้ของแต่ละคน</span></li>
+              <li><span data-l="en">Reviewed academic English assignments for grammar, structure, coherence and argument, explaining each correction clearly.</span><span data-l="th" lang="th">ตรวจงานเขียนภาษาอังกฤษเชิงวิชาการด้านไวยากรณ์ โครงสร้าง ความต่อเนื่องของเนื้อหา และการให้เหตุผล พร้อมอธิบายทุกจุดที่แก้ไขอย่างชัดเจน</span></li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Freelance English Tutor, Translator &amp; Visa Application Support</span><span data-l="th" lang="th">ติวเตอร์ภาษาอังกฤษ นักแปล และผู้ช่วยจัดเตรียมเอกสารวีซ่า (อิสระ)</span></h3>
+                <p class="entry-org"><span data-l="en">Self-employed · Thailand and online</span><span data-l="th" lang="th">ฟรีแลนซ์ · ประเทศไทยและออนไลน์</span></p>
+              </div>
+              <p class="entry-when">2018 – 2023</p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Taught one-to-one English for five years to learners from beginner to advanced level, including IELTS, TOEFL and TOEIC preparation.</span><span data-l="th" lang="th">สอนภาษาอังกฤษแบบตัวต่อตัวเป็นเวลาห้าปี ให้ผู้เรียนตั้งแต่ระดับเริ่มต้นจนถึงระดับสูง รวมถึงการเตรียมสอบ IELTS, TOEFL และ TOEIC</span></li>
+              <li><span data-l="en">Translated research and professional documents (Thai–English and English–Thai), checking names, dates, figures and terminology against source materials.</span><span data-l="th" lang="th">แปลงานวิจัยและเอกสารวิชาชีพ (ไทย–อังกฤษ และอังกฤษ–ไทย) โดยตรวจสอบชื่อ วันที่ ตัวเลข และศัพท์เฉพาะเทียบกับต้นฉบับ</span></li>
+              <li><span data-l="en">Prepared visa applications for clients and delivered all assignments to agreed deadlines.</span><span data-l="th" lang="th">จัดเตรียมเอกสารยื่นขอวีซ่าให้ลูกค้า และส่งมอบงานทั้งหมดตามกำหนดเวลาที่ตกลงไว้</span></li>
+            </ul>
+            <!-- Work samples. Clients' names, ID numbers, dates and amounts are
+                 blacked out in the image files themselves, not just covered up. -->
+            <div class="gallery gallery-docs" role="group" aria-label="Examples of my work, with personal details blacked out" data-th-aria-label="ตัวอย่างผลงาน โดยปิดข้อมูลส่วนตัวไว้">
+              <a class="photo" href="images/freelance/visa-approved.jpg" style="--ar: 1.3208; --tilt: -2deg; --i: 0" data-caption="A UK visa application I prepared: approved (personal details hidden)" data-th-caption="ใบสมัครวีซ่าสหราชอาณาจักรที่ฉันจัดเตรียม: ได้รับอนุมัติ (ปิดข้อมูลส่วนตัวไว้)">
+                <span class="photo-frame"><img src="images/freelance/visa-approved-thumb.jpg" alt="Approval notice for a UK visit visa application I prepared, with the applicant’s name, reference, date of birth, nationality, passport number, travel dates and year blacked out" data-th-alt="หนังสือแจ้งผลอนุมัติวีซ่าท่องเที่ยวสหราชอาณาจักรจากใบสมัครที่ฉันจัดเตรียม โดยปิดชื่อ เลขอ้างอิง วันเกิด สัญชาติ เลขหนังสือเดินทาง วันเดินทาง และปีไว้" width="560" height="424" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Visa approved</span><span data-l="th" lang="th">วีซ่าผ่านแล้ว</span></span>
+              </a>
+              <a class="photo" href="images/freelance/payslip-translation.jpg" style="--ar: 0.9677; --tilt: 2.2deg; --i: 1" data-caption="A Thai payslip I translated into English (personal details hidden)" data-th-caption="สลิปเงินเดือนภาษาไทยที่แปลเป็นภาษาอังกฤษ (ปิดข้อมูลส่วนตัวไว้)">
+                <span class="photo-frame"><img src="images/freelance/payslip-translation-thumb.jpg" alt="My English translation of a Thai teacher’s monthly payslip, with the name, school, year and all amounts blacked out" data-th-alt="งานแปลสลิปเงินเดือนข้าราชการครูจากภาษาไทยเป็นภาษาอังกฤษ โดยปิดชื่อ โรงเรียน ปี และตัวเลขทั้งหมดไว้" width="420" height="434" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Translated by me</span><span data-l="th" lang="th">ฝีมือแปลเอง</span></span>
+              </a>
+            </div>
+            <p class="aside-note" aria-hidden="true"><span data-l="en">Names and numbers hidden, of course.</span><span data-l="th" lang="th">ปิดชื่อและตัวเลขไว้แล้ว</span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EDUCATION ============ -->
+    <section class="section" id="education" aria-labelledby="edu-h">
+      <div class="wrap split">
+        <header class="section-title"><p class="section-num" aria-hidden="true">03</p><h2 id="edu-h"><span data-l="en">Education</span><span data-l="th" lang="th">การศึกษา</span></h2></header>
+        <div class="section-body">
+          <article class="entry has-logo">
+            <img class="entry-logo" src="images/liverpool.png" alt="" width="56" height="56" loading="lazy">
+            <div class="entry-main">
+              <header class="entry-head">
+                <div>
+                  <h3 class="entry-title"><span data-l="en">Postgraduate Diploma (PGDip) in English Language</span><span data-l="th" lang="th">ประกาศนียบัตรบัณฑิต (PGDip) สาขาภาษาอังกฤษ</span></h3>
+                  <p class="entry-org"><span data-l="en">University of Liverpool · Liverpool, United Kingdom</span><span data-l="th" lang="th">มหาวิทยาลัยลิเวอร์พูล · ลิเวอร์พูล สหราชอาณาจักร</span></p>
+                </div>
+                <p class="entry-when">2025 – 2026</p>
+              </header>
+              <ul class="entry-points">
+                <li><span data-l="en">Modules: corpus linguistics, language research methods, functional linguistics, language and identity, computational social science, global journalism and politics, big data and society.</span><span data-l="th" lang="th">รายวิชา: ภาษาศาสตร์คลังข้อมูล ระเบียบวิธีวิจัยทางภาษา ภาษาศาสตร์เชิงหน้าที่ ภาษากับอัตลักษณ์ สังคมศาสตร์เชิงคำนวณ วารสารศาสตร์และการเมืองระดับโลก และบิ๊กดาต้ากับสังคม</span></li>
+                <li><span data-l="en">Dissertation work combined discourse analysis with computational approaches, coding and <mark class="hl">AI-assisted text analysis</mark>.</span><span data-l="th" lang="th">งานวิทยานิพนธ์ผสานการวิเคราะห์วาทกรรมเข้ากับวิธีการเชิงคำนวณ การเขียนโค้ด และ<mark class="hl">การวิเคราะห์ข้อความโดยใช้ AI ช่วย</mark></span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="entry has-logo">
+            <img class="entry-logo" src="images/kasetsart.png" alt="" width="56" height="56" loading="lazy">
+            <div class="entry-main">
+              <header class="entry-head">
+                <div>
+                  <h3 class="entry-title"><span data-l="en">Bachelor of Arts in English <span class="title-aside">(Minor in Translation and Interpreting)</span></span><span data-l="th" lang="th">ศิลปศาสตรบัณฑิต สาขาวิชาภาษาอังกฤษ <span class="title-aside">(วิชาโทการแปลและการล่าม)</span></span></h3>
+                  <p class="entry-org"><span data-l="en">Kasetsart University · Bangkok, Thailand</span><span data-l="th" lang="th">มหาวิทยาลัยเกษตรศาสตร์ · กรุงเทพฯ</span></p>
+                </div>
+                <p class="entry-when">2020 – 2024</p>
+              </header>
+              <ul class="entry-points">
+                <li><span data-l="en">GPA 3.30/4.00 (<mark class="hl">Second Class Honours</mark>).</span><span data-l="th" lang="th">เกรดเฉลี่ย 3.30/4.00 (<mark class="hl">เกียรตินิยมอันดับสอง</mark>)</span></li>
+                <li><span data-l="en">Relevant coursework: Introduction to Interpretation; Thai–English and English–Thai Translation; Specialised Translation; translation in political, legal and business contexts.</span><span data-l="th" lang="th">รายวิชาที่เกี่ยวข้อง: การล่ามเบื้องต้น การแปลไทย–อังกฤษและอังกฤษ–ไทย การแปลเฉพาะทาง และการแปลในบริบทการเมือง กฎหมาย และธุรกิจ</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="entry has-logo">
+            <img class="entry-logo" src="images/ramkhamhaeng.png" alt="" width="56" height="56" loading="lazy">
+            <div class="entry-main">
+              <header class="entry-head">
+                <div>
+                  <h3 class="entry-title"><span data-l="en">Bachelor of Political Science in International Relations</span><span data-l="th" lang="th">รัฐศาสตรบัณฑิต สาขาวิชาความสัมพันธ์ระหว่างประเทศ</span></h3>
+                  <p class="entry-org"><span data-l="en">Ramkhamhaeng University · Bangkok, Thailand</span><span data-l="th" lang="th">มหาวิทยาลัยรามคำแหง · กรุงเทพฯ</span></p>
+                </div>
+                <p class="entry-when">2021 – 2024</p>
+              </header>
+              <ul class="entry-points">
+                <li><span data-l="en">GPA 3.02/4.00. Coursework: diplomacy, international organisations, public international law and Southeast Asian affairs.</span><span data-l="th" lang="th">เกรดเฉลี่ย 3.02/4.00 รายวิชา: การทูต องค์การระหว่างประเทศ กฎหมายระหว่างประเทศแผนกคดีเมือง และกิจการเอเชียตะวันออกเฉียงใต้</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LEADERSHIP ============ -->
+    <section class="section" id="leadership" aria-labelledby="lead-h">
+      <div class="wrap split">
+        <header class="section-title"><p class="section-num" aria-hidden="true">04</p><h2 id="lead-h"><span data-l="en">Leadership &amp; activities</span><span data-l="th" lang="th">ภาวะผู้นำและกิจกรรม</span></h2></header>
+        <div class="section-body">
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Member Development Team Manager, Talent Management (HR)</span><span data-l="th" lang="th">ผู้จัดการทีมพัฒนาสมาชิก ฝ่ายบริหารบุคลากร (HR)</span></h3>
+                <p class="entry-org"><span data-l="en">AIESEC in Kasetsart University · Bangkok, Thailand</span><span data-l="th" lang="th">AIESEC มหาวิทยาลัยเกษตรศาสตร์ · กรุงเทพฯ</span></p>
+              </div>
+              <p class="entry-when">2021 – 2023</p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Promoted after one year from Talent Development Team Member to Team Manager, <strong><mark class="hl">leading a team of five</mark></strong> within the chapter’s talent management (HR) function.</span><span data-l="th" lang="th">ได้รับการเลื่อนตำแหน่งหลังทำงานได้หนึ่งปี จากสมาชิกทีมพัฒนาบุคลากรเป็นผู้จัดการทีม <strong><mark class="hl">นำทีมห้าคน</mark></strong> ในฝ่ายบริหารบุคลากร (HR) ของสาขา</span></li>
+              <li><span data-l="en">Recruited and onboarded new members, running induction and training so they understood their roles, responsibilities and development goals.</span><span data-l="th" lang="th">สรรหาและรับสมาชิกใหม่ จัดปฐมนิเทศและฝึกอบรมเพื่อให้เข้าใจบทบาท หน้าที่ และเป้าหมายการพัฒนาของตนเอง</span></li>
+              <li><span data-l="en">Tracked member experience and team performance, and gave regular follow-up, feedback and one-to-one coaching to support engagement and development.</span><span data-l="th" lang="th">ติดตามประสบการณ์ของสมาชิกและผลการทำงานของทีม พร้อมติดตามผล ให้ฟีดแบ็ก และโค้ชแบบตัวต่อตัวอย่างสม่ำเสมอ เพื่อส่งเสริมความผูกพันและการพัฒนา</span></li>
+              <li><span data-l="en">Analysed member feedback surveys and presented recommendations to improve internal communication and member support.</span><span data-l="th" lang="th">วิเคราะห์แบบสำรวจความคิดเห็นของสมาชิก และนำเสนอข้อเสนอแนะเพื่อพัฒนาการสื่อสารภายในและการดูแลสมาชิก</span></li>
+              <li><span data-l="en">Coordinated member-development and leadership activities with AIESEC committees at Mahidol and Chulalongkorn universities and with overseas partners.</span><span data-l="th" lang="th">ประสานงานกิจกรรมพัฒนาสมาชิกและภาวะผู้นำร่วมกับคณะกรรมการ AIESEC มหาวิทยาลัยมหิดลและจุฬาลงกรณ์มหาวิทยาลัย รวมถึงพันธมิตรในต่างประเทศ</span></li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Head of the Interpreting Club</span><span data-l="th" lang="th">ประธานชมรมล่าม</span></h3>
+                <p class="entry-org"><span data-l="en">Kasetsart University</span><span data-l="th" lang="th">มหาวิทยาลัยเกษตรศาสตร์</span></p>
+              </div>
+              <p class="entry-when"><span data-l="en">Jul 2023 – Nov 2023</span><span data-l="th" lang="th">ก.ค. 2023 – พ.ย. 2023</span></p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Led club activities, delegated tasks and <mark class="hl">coordinated the Thai–English interpreting team</mark> for international guests at KU International Food Fair 2023.</span><span data-l="th" lang="th">นำกิจกรรมของชมรม มอบหมายงาน และ<mark class="hl">ประสานงานทีมล่ามไทย–อังกฤษ</mark>สำหรับแขกชาวต่างชาติในงาน KU International Food Fair 2023</span></li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">International Student Buddy</span><span data-l="th" lang="th">บัดดี้นักศึกษาต่างชาติ</span></h3>
+                <p class="entry-org"><span data-l="en">KU Buddy Programme, Kasetsart University</span><span data-l="th" lang="th">โครงการ KU Buddy มหาวิทยาลัยเกษตรศาสตร์</span></p>
+              </div>
+              <p class="entry-when"><span data-l="en">Sep 2023 – Nov 2023</span><span data-l="th" lang="th">ก.ย. 2023 – พ.ย. 2023</span></p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Guided international exchange students on university life, local facilities and Thai culture, and joined outings and language-exchange activities.</span><span data-l="th" lang="th">แนะนำนักศึกษาแลกเปลี่ยนชาวต่างชาติเกี่ยวกับชีวิตในมหาวิทยาลัย สิ่งอำนวยความสะดวกในท้องถิ่น และวัฒนธรรมไทย รวมถึงร่วมกิจกรรมนอกสถานที่และกิจกรรมแลกเปลี่ยนภาษา</span></li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <header class="entry-head">
+              <div>
+                <h3 class="entry-title"><span data-l="en">Facilitator</span><span data-l="th" lang="th">ผู้ดำเนินกิจกรรม (Facilitator)</span></h3>
+                <p class="entry-org"><span data-l="en">Global Leadership Class Project Harvard, through AIESEC</span><span data-l="th" lang="th">โครงการ Global Leadership Class Project Harvard ผ่าน AIESEC</span></p>
+              </div>
+              <p class="entry-when">2020</p>
+            </header>
+            <ul class="entry-points">
+              <li><span data-l="en">Designed and led Thai language and culture sessions for international participants; received a Facilitator Certificate of Recognition.</span><span data-l="th" lang="th">ออกแบบและนำกิจกรรมเรียนรู้ภาษาและวัฒนธรรมไทยให้ผู้เข้าร่วมชาวต่างชาติ และได้รับประกาศนียบัตรเชิดชูเกียรติผู้ดำเนินกิจกรรม (Facilitator Certificate of Recognition)</span></li>
+            </ul>
+            <div class="gallery gallery-single" role="group" aria-label="Global Leadership Class poster" data-th-aria-label="โปสเตอร์ Global Leadership Class">
+              <a class="photo" href="images/aiesec/glc.jpg" style="--ar: 1; --tilt: -2deg; --i: 0" data-caption="Global Leadership Class facilitator line-up, through AIESEC (2020)" data-th-caption="ทีมผู้ดำเนินกิจกรรม Global Leadership Class ผ่าน AIESEC (2020)">
+                <span class="photo-frame"><img src="images/aiesec/glc-thumb.jpg" alt="Global Leadership Class poster introducing five facilitators, including Kiatthipat Mengsan, Staff TM at AIESEC in Kasetsart University, Thailand" data-th-alt="โปสเตอร์ Global Leadership Class แนะนำผู้ดำเนินกิจกรรมห้าคน รวมถึง Kiatthipat Mengsan จาก AIESEC มหาวิทยาลัยเกษตรศาสตร์" width="600" height="600" loading="lazy" decoding="async"></span>
+                <span class="photo-label" aria-hidden="true"><span data-l="en">Me, top row in the middle</span><span data-l="th" lang="th">แถวบน ตรงกลาง</span></span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section class="section" id="skills" aria-labelledby="skills-h">
+      <div class="wrap split">
+        <header class="section-title"><p class="section-num" aria-hidden="true">05</p><h2 id="skills-h"><span data-l="en">Skills</span><span data-l="th" lang="th">ทักษะ</span></h2></header>
+        <div class="section-body">
+          <div class="skill-groups">
+            <div class="skill-group">
+              <h3><span data-l="en">Language &amp; communication</span><span data-l="th" lang="th">ภาษาและการสื่อสาร</span></h3>
+              <ul class="tags">
+                <li><span data-l="en">Thai–English translation</span><span data-l="th" lang="th">การแปลไทย–อังกฤษ</span></li>
+                <li><span data-l="en">Consecutive interpreting</span><span data-l="th" lang="th">การล่ามแบบพูดตาม (Consecutive)</span></li>
+                <li><span data-l="en">Simultaneous interpreting</span><span data-l="th" lang="th">การล่ามแบบพูดพร้อม (Simultaneous)</span></li>
+                <li><span data-l="en">Academic editing &amp; proofreading</span><span data-l="th" lang="th">การตรวจแก้และพิสูจน์อักษรงานวิชาการ</span></li>
+                <li><span data-l="en">Public speaking</span><span data-l="th" lang="th">การพูดในที่สาธารณะ</span></li>
+                <li><span data-l="en">Cross-cultural communication</span><span data-l="th" lang="th">การสื่อสารข้ามวัฒนธรรม</span></li>
+              </ul>
+            </div>
+            <div class="skill-group">
+              <h3><span data-l="en">Customer service &amp; coordination</span><span data-l="th" lang="th">งานบริการลูกค้าและการประสานงาน</span></h3>
+              <ul class="tags">
+                <li><span data-l="en">Guest relations</span><span data-l="th" lang="th">ลูกค้าสัมพันธ์</span></li>
+                <li><span data-l="en">Reservations</span><span data-l="th" lang="th">การรับจอง</span></li>
+                <li><span data-l="en">POS &amp; card payments</span><span data-l="th" lang="th">ระบบ POS และการชำระเงินด้วยบัตร</span></li>
+                <li><span data-l="en">Complaint resolution</span><span data-l="th" lang="th">การจัดการข้อร้องเรียน</span></li>
+                <li><span data-l="en">Newcomer support</span><span data-l="th" lang="th">การดูแลผู้มาใหม่</span></li>
+                <li><span data-l="en">Team coordination</span><span data-l="th" lang="th">การประสานงานทีม</span></li>
+              </ul>
+            </div>
+            <div class="skill-group">
+              <h3><span data-l="en">People &amp; talent development</span><span data-l="th" lang="th">การพัฒนาบุคลากร</span></h3>
+              <ul class="tags">
+                <li><span data-l="en">Recruitment &amp; onboarding</span><span data-l="th" lang="th">การสรรหาและรับสมาชิกใหม่</span></li>
+                <li><span data-l="en">Induction &amp; training</span><span data-l="th" lang="th">การปฐมนิเทศและฝึกอบรม</span></li>
+                <li><span data-l="en">Performance tracking</span><span data-l="th" lang="th">การติดตามผลการปฏิบัติงาน</span></li>
+                <li><span data-l="en">Coaching &amp; feedback</span><span data-l="th" lang="th">การโค้ชและให้ฟีดแบ็ก</span></li>
+                <li><span data-l="en">Member engagement surveys</span><span data-l="th" lang="th">แบบสำรวจความผูกพันของสมาชิก</span></li>
+                <li><span data-l="en">Team leadership</span><span data-l="th" lang="th">การนำทีม</span></li>
+              </ul>
+            </div>
+            <div class="skill-group">
+              <h3><span data-l="en">Research &amp; digital</span><span data-l="th" lang="th">การวิจัยและดิจิทัล</span></h3>
+              <ul class="tags">
+                <li><span data-l="en">Corpus linguistics</span><span data-l="th" lang="th">ภาษาศาสตร์คลังข้อมูล</span></li>
+                <li><span data-l="en">Computational social science</span><span data-l="th" lang="th">สังคมศาสตร์เชิงคำนวณ</span></li>
+                <li><span data-l="en">Python text analysis</span><span data-l="th" lang="th">การวิเคราะห์ข้อความด้วย Python</span></li>
+                <li><span data-l="en">AI-assisted research</span><span data-l="th" lang="th">การวิจัยโดยใช้ AI ช่วย</span></li>
+                <li><span data-l="en">Data analysis</span><span data-l="th" lang="th">การวิเคราะห์ข้อมูล</span></li>
+                <li>Microsoft Office</li>
+              </ul>
+            </div>
+          </div>
+
+          <dl class="facts">
+            <div>
+              <dt><span data-l="en">Languages</span><span data-l="th" lang="th">ภาษา</span></dt>
+              <dd><span data-l="en">Thai (native) · English (professional working proficiency) · Spanish (elementary, A1)</span><span data-l="th" lang="th">ไทย (ภาษาแม่) · อังกฤษ (ระดับใช้งานในการทำงาน) · สเปน (ระดับพื้นฐาน A1)</span></dd>
+            </div>
+            <div>
+              <dt><span data-l="en">Test scores</span><span data-l="th" lang="th">ผลสอบ</span></dt>
+              <dd><span data-l="en">TOEIC 765/990 (Oct 2026) · Duolingo English Test 125/160 (Speaking 140, Writing 135) · EF Test 76/100 (C2 Proficient)</span><span data-l="th" lang="th">TOEIC 765/990 (ต.ค. 2026) · Duolingo English Test 125/160 (การพูด 140 การเขียน 135) · EF Test 76/100 (ระดับ C2)</span></dd>
+            </div>
+            <div>
+              <dt><span data-l="en">AI tools</span><span data-l="th" lang="th">เครื่องมือ AI</span></dt>
+              <dd><span data-l="en">Claude, Claude Cowork, NotebookLM · prompt engineering · AI-assisted text analysis</span><span data-l="th" lang="th">Claude, Claude Cowork, NotebookLM · การเขียนพรอมต์ · การวิเคราะห์ข้อความโดยใช้ AI ช่วย</span></dd>
+            </div>
+            <div>
+              <dt><span data-l="en">Software</span><span data-l="th" lang="th">ซอฟต์แวร์</span></dt>
+              <dd><span data-l="en">Microsoft Word, Excel, PowerPoint and Outlook · SharePoint · OneDrive · Adobe Acrobat · Photoshop · Python · corpus and text-analysis tools · video editing</span><span data-l="th" lang="th">Microsoft Word, Excel, PowerPoint และ Outlook · SharePoint · OneDrive · Adobe Acrobat · Photoshop · Python · เครื่องมือวิเคราะห์คลังข้อมูลและข้อความ · การตัดต่อวิดีโอ</span></dd>
+            </div>
+            <div>
+              <dt><span data-l="en">Awards</span><span data-l="th" lang="th">รางวัล</span></dt>
+              <dd><span data-l="en">Innovation and Initiative Award, University of Wisconsin–Madison (2024) · Facilitator Certificate of Recognition, Global Leadership Class Project Harvard (2020)</span><span data-l="th" lang="th">Innovation and Initiative Award มหาวิทยาลัยวิสคอนซิน–แมดิสัน (2024) · Facilitator Certificate of Recognition โครงการ Global Leadership Class Project Harvard (2020)</span></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section contact" id="contact" aria-labelledby="contact-h">
+      <div class="wrap split">
+        <header class="section-title"><p class="section-num" aria-hidden="true">06</p><h2 id="contact-h"><span data-l="en">Say hello</span><span data-l="th" lang="th">ทักทายกัน</span></h2></header>
+        <div class="section-body contact-block">
+          <p class="contact-text"><span data-l="en">Open to roles in translation, interpreting, English education and international customer service, in Thailand or abroad.</span><span data-l="th" lang="th">สนใจร่วมงานในตำแหน่งด้านการแปล ล่าม การสอนภาษาอังกฤษ และงานบริการลูกค้าระดับนานาชาติ ทั้งในประเทศไทยและต่างประเทศ</span></p>
+          <a class="contact-email" href="mailto:kiatthipat@gmail.com">kiatthipat@gmail.com</a>
+          <p class="aside-note" aria-hidden="true"><span data-l="en">In Thai or English.</span><span data-l="th" lang="th">คุยภาษาไทยหรืออังกฤษก็ได้</span></p>
+          <p class="contact-links">
+            <a class="link-arrow" href="https://www.linkedin.com/in/kiatthipat-mengsan-0b6121152" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+            <a class="link-arrow" href="resume.pdf" download="Kiatthipat_Mengsan_Resume.pdf" data-th-href="resume-th.pdf" data-th-download="Kiatthipat_Mengsan_Resume_TH.pdf"><span data-l="en">Resume (PDF)</span><span data-l="th" lang="th">เรซูเม่ (PDF)</span> <span aria-hidden="true">↓</span></a>
+          </p>
+          <p class="contact-meta"><span data-l="en">Based in Trang, Thailand, and open to relocation. References available on request.</span><span data-l="th" lang="th">อาศัยอยู่ที่จังหวัดตรัง และพร้อมย้ายที่ทำงาน มีบุคคลอ้างอิงให้ตามคำขอ</span></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <p>© 2026 <span data-l="en">Kiatthipat Mengsan</span><span data-l="th" lang="th">เกียรติภัทร์ เม่งซ่าน</span></p>
+        <a href="#top"><span data-l="en">Back to top</span><span data-l="th" lang="th">กลับขึ้นด้านบน</span> ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Full-screen photo viewer (gallery.js) -->
+  <dialog class="lightbox" aria-label="Photo viewer" data-th-aria-label="ดูรูปภาพ">
+    <button class="lightbox-btn lightbox-close" type="button" aria-label="Close" data-th-aria-label="ปิด" autofocus>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <p class="lightbox-count" aria-live="polite"></p>
+    <figure class="lightbox-figure">
+      <img class="lightbox-img" alt="">
+      <figcaption class="lightbox-caption"></figcaption>
+    </figure>
+    <button class="lightbox-btn lightbox-prev" type="button" aria-label="Previous photo" data-th-aria-label="รูปก่อนหน้า">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lightbox-btn lightbox-next" type="button" aria-label="Next photo" data-th-aria-label="รูปถัดไป">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </dialog>
+</body>
+</html>
