@@ -1,10 +1,10 @@
 /* ==========================================================
    App tour video (Chaba Chaba)
    The silent phone video plays by itself while it's on screen and
-   pauses when you scroll past it or switch tabs. The round button
-   (or tapping the phone) plays/pauses it; once you pause it yourself
-   it stays paused. With reduced motion it never starts by itself.
-   The video file only downloads when it first plays.
+   pauses when you scroll past it or switch tabs. The Pause / Play
+   button (or tapping the phone) controls it; once you pause it
+   yourself it stays paused. With reduced motion it never starts by
+   itself. The video file only downloads when it first plays.
    Without JavaScript the browser's own video controls are shown.
    ========================================================== */
 (function () {
@@ -22,7 +22,8 @@
     let stoppedByVisitor = calm;
     let inView = false;
 
-    const sync = () => button.setAttribute('aria-pressed', String(!video.paused));
+    // the button shows "Pause" while playing and "Play" while paused
+    const sync = () => { button.dataset.playing = String(!video.paused); };
     const play = () => {
       const started = video.play();
       if (started && started.catch) started.catch(sync);

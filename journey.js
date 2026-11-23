@@ -1,6 +1,6 @@
 /* ==========================================================
    Journey line
-   A line runs down the page from "About" to "Contact" and draws
+   A hairline runs down the page from "About" to "Contact" and draws
    itself as you scroll. Its tip follows a reading line 60% of the
    way down the screen, so the drawn length is how far you've
    scrolled through the timeline. Each chapter and each job or
@@ -28,29 +28,9 @@
 
   document.documentElement.classList.add('has-journey');
 
-  // A hand-drawn line: small, smooth sideways wobbles that come out the
-  // same on every visit (seeded), so the line doesn't jitter on resize.
-  function wobblyPath(x0, y0, y1) {
-    const count = Math.max(1, Math.round((y1 - y0) / 46));
-    let s = 5;
-    const wobble = () => {
-      s = (s * 9301 + 49297) % 233280;
-      return (s / 233280 - 0.5) * 3.2;
-    };
-    const pts = [];
-    for (let k = 0; k <= count; k++) {
-      const edge = k === 0 || k === count;
-      pts.push([x0 + (edge ? 0 : wobble()), y0 + ((y1 - y0) * k) / count]);
-    }
-    const f = (v) => v.toFixed(1);
-    let d = `M ${f(pts[0][0])} ${f(pts[0][1])}`;
-    for (let k = 1; k < pts.length - 1; k++) {
-      const mx = (pts[k][0] + pts[k + 1][0]) / 2;
-      const my = (pts[k][1] + pts[k + 1][1]) / 2;
-      d += ` Q ${f(pts[k][0])} ${f(pts[k][1])} ${f(mx)} ${f(my)}`;
-    }
-    const last = pts[pts.length - 1];
-    return `${d} L ${f(last[0])} ${f(last[1])}`;
+  // A straight hairline from the first stop to the last.
+  function straightPath(x0, y0, y1) {
+    return `M ${x0.toFixed(1)} ${y0.toFixed(1)} L ${x0.toFixed(1)} ${y1.toFixed(1)}`;
   }
 
   // Distance from the top of <main>. Uses offsetTop, which ignores
@@ -99,7 +79,7 @@
     end = stops[stops.length - 1].y;
     if (end <= start) return;
 
-    const d = wobblyPath(x, start, end);
+    const d = straightPath(x, start, end);
     track.setAttribute('d', d);
     line.setAttribute('d', d);
     pathLen = line.getTotalLength();
@@ -113,7 +93,7 @@
       const c = nodeLayer.children[i];
       c.setAttribute('cx', x);
       c.setAttribute('cy', s.y);
-      c.setAttribute('r', s.kind === 'stop' ? 4.5 : 6.5);
+      c.setAttribute('r', s.kind === 'stop' ? 2.5 : 3.5);
       c.classList.add('journey-node', `is-${s.kind}`);
       return { y: s.y, el: c };
     });

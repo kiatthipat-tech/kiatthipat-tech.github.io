@@ -7,11 +7,9 @@
      version in data-th-* and are swapped here.
    - The choice is remembered on this device and added to the URL
      as ?lang=th, so a Thai link can be shared.
-   - Switching plays a short "translation" sequence: a yellow ink
-     sheet bursts out of the button with the greeting written on it,
-     the language changes underneath, the sheet lifts away and the
-     new text rises into place while pen strokes are redrawn.
-     Visitors who prefer reduced motion get an instant switch.
+   - Switching brings the other language into focus: the words blur
+     out and the new ones sharpen (see refocus below). Visitors who
+     prefer reduced motion get an instant switch.
    The starting language is set in <head> before the page paints.
    ========================================================== */
 (function () {
@@ -19,8 +17,6 @@
   const buttons = Array.from(document.querySelectorAll('[data-set-lang]'));
   const description = document.querySelector('meta[name="description"]');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const EASE = 'cubic-bezier(.16, 1, .3, 1)';
-  const EASE_IN_OUT = 'cubic-bezier(.7, 0, .2, 1)';
 
   const META = {
     en: {
@@ -29,8 +25,8 @@
       announce: 'Switched to English',
     },
     th: {
-      title: 'Kiatthipat Mengsan — ภาษาไทย–อังกฤษ และงานบริการลูกค้า',
-      description: 'Kiatthipat Mengsan — งานแปลไทย–อังกฤษ ล่าม ติวเตอร์ภาษาอังกฤษ และงานบริการลูกค้าระดับนานาชาติ ประกาศนียบัตรบัณฑิตสาขาภาษาอังกฤษ มหาวิทยาลัยลิเวอร์พูล',
+      title: 'เกียรติภัทร์ เม่งซ่าน (Kiatthipat Mengsan) — ภาษาไทย–อังกฤษ และงานบริการลูกค้า',
+      description: 'เกียรติภัทร์ เม่งซ่าน (Kiatthipat Mengsan) — งานแปลไทย–อังกฤษ ล่าม ติวเตอร์ภาษาอังกฤษ และงานบริการลูกค้าระดับนานาชาติ ประกาศนียบัตรบัณฑิตสาขาภาษาอังกฤษ มหาวิทยาลัยลิเวอร์พูล',
       announce: 'เปลี่ยนเป็นภาษาไทยแล้ว',
     },
   };
@@ -86,158 +82,103 @@
   document.body.appendChild(live);
   const announce = (lang) => { live.textContent = META[lang].announce; };
 
-  // Let other parts of the page react (the sticky note jumps to that greeting).
+  // Let other parts of the page react (the greeting in the hero follows).
   const tell = (lang) => document.dispatchEvent(new CustomEvent('site:lang', { detail: { lang } }));
 
-  /* ---------- The ink sheet ---------- */
-  const sweep = document.createElement('div');
-  sweep.className = 'lang-sweep';
-  sweep.setAttribute('aria-hidden', 'true');
-  sweep.innerHTML =
-    '<p class="lang-sweep-word"></p>' +
-    '<svg class="lang-sweep-line" viewBox="0 0 200 20" preserveAspectRatio="none" focusable="false">' +
-    '<path d="M 4 13 C 42 5, 84 18, 122 10 S 178 6, 196 12" pathLength="1"/></svg>' +
-    '<p class="lang-sweep-sub"></p>';
-  document.body.appendChild(sweep);
-  const sweepWord = sweep.querySelector('.lang-sweep-word');
-  const sweepSub = sweep.querySelector('.lang-sweep-sub');
-  const sweepLine = sweep.querySelector('.lang-sweep-line path');
+  /* ---------- The switch: the words come into focus in the other language ----------
+     Only what changes moves. The words on screen blur away, the page
+     swaps, and the new words sharpen from the top of the screen down.
+     Photos and blocks that the new text nudges glide to their new place
+     instead of jumping, and the part of the page being read stays put. */
+  const EASE = 'cubic-bezier(.2, .7, 0, 1)';
+  // pictures that glide to their new place (each one moves on its own)
+  const MEDIA = '.hero-media, .marquee, .photo-frame, .app-demo, .entry-logo';
+  // the lines of the page that can hold your place while you read
+  const ANCHORS = '.hero, .marquee, .entry-head, .entry-points > li, .prose > p, .gallery, .app-demo, .skill-group, .facts > div, .contact-block, .site-footer';
+  const NAV_ROOM = 80; // px under the sticky menu bar
 
-  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-  const inView = (el) => {
+  const onScreen = (el) => {
     const r = el.getBoundingClientRect();
-    return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+    return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < window.innerHeight;
   };
-  function restart(el, cls) {
-    el.classList.remove(cls);
-    void el.offsetWidth; // reflow so the animation plays again
-    el.classList.add(cls);
-  }
+  const wordsOnScreen = (lang) => Array.from(document.querySelectorAll(`[data-l="${lang}"]`)).filter(onScreen);
+  const settle = (anims) => Promise.all(anims.map((a) => a.finished.catch(() => {})));
 
-  /* ---------- New text rises in, strokes are redrawn ---------- */
-  function playIn(lang) {
-    // the text boxes on screen, top to bottom
-    const boxes = new Set();
-    document.querySelectorAll(`[data-l="${lang}"]`).forEach((span) => {
-      if (inView(span)) boxes.add(span.parentElement);
-    });
-    const ordered = Array.from(boxes).sort((a, b) => {
-      const ra = a.getBoundingClientRect();
-      const rb = b.getBoundingClientRect();
-      return (ra.top - rb.top) || (ra.left - rb.left);
-    });
+  async function refocus(lang, change) {
+    // 1. the words on screen blur away
+    const leaving = wordsOnScreen(root.getAttribute('data-lang'));
+    await settle(leaving.map((el) => el.animate(
+      [{ opacity: 1, filter: 'blur(0)' }, { opacity: 0, filter: 'blur(4px)' }],
+      { duration: 160, easing: 'ease-in', fill: 'forwards' }
+    )));
 
-    ordered.forEach((el, i) => {
-      const delay = 80 + Math.min(i, 16) * 45;
-      if (el.classList.contains('note')) {
-        // handwritten notes are written out again
-        el.animate(
-          [{ clipPath: 'inset(-60% 100% -60% -20%)' }, { clipPath: 'inset(-60% -20% -60% -20%)' }],
-          { duration: 900, delay: delay + 350, easing: 'ease', fill: 'backwards' }
-        );
-      } else {
-        // like subtitles changing: rise out of a blur
-        el.animate(
-          [
-            { opacity: 0, translate: '0 .75em', filter: 'blur(6px)' },
-            { opacity: 1, translate: '0 0', filter: 'blur(0)' },
-          ],
-          { duration: 700, delay, easing: EASE, fill: 'backwards' }
-        );
-      }
-    });
-
-    // pen underlines, circles and arrows on screen are drawn again
-    document.querySelectorAll('.scribble path').forEach((path) => {
-      if (path.closest('.lang-chips') || !inView(path)) return;
-      path.animate(
-        [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }],
-        { duration: 950, delay: 450, easing: EASE, fill: 'backwards' }
-      );
-    });
-
-    // and the highlighter sweeps across again
-    document.querySelectorAll(`[data-l="${lang}"] strong:not(.circled)`).forEach((mark) => {
-      if (!inView(mark)) return;
-      mark.animate(
-        [{ backgroundSize: '0% 100%' }, { backgroundSize: '100% 100%' }],
-        { duration: 900, delay: 600, easing: EASE, fill: 'backwards' }
-      );
-    });
-  }
-
-  /* ---------- The switch ---------- */
-  let busy = false;
-
-  async function switchTo(lang, button) {
-    if (busy || root.getAttribute('data-lang') === lang) return;
-    busy = true;
-    restart(button, 'is-popping');
-
-    const animated = root.classList.contains('motion') && !reduceMotion.matches && typeof sweep.animate === 'function';
-    if (!animated) {
-      apply(lang, true);
-      tell(lang);
-      announce(lang);
-      busy = false;
-      return;
+    // 2. swap, keeping the line at the top of the screen where it was
+    const media = Array.from(document.querySelectorAll(MEDIA)).filter(onScreen);
+    const before = new Map(media.map((el) => [el, el.getBoundingClientRect().top]));
+    const anchor = window.scrollY > 0
+      ? Array.from(document.querySelectorAll(ANCHORS)).find((el) => onScreen(el) && el.getBoundingClientRect().bottom > NAV_ROOM)
+      : null;
+    const anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
+    change();
+    leaving.forEach((el) => el.getAnimations().forEach((a) => a.cancel())); // hidden now
+    if (anchor) {
+      const drift = anchor.getBoundingClientRect().top - anchorTop;
+      if (Math.abs(drift) >= 1) window.scrollTo({ top: window.scrollY + drift, behavior: 'instant' });
     }
 
-    // 1. the sheet bursts out of the button that was clicked
-    const r = button.getBoundingClientRect();
-    const x = r.left + r.width / 2;
-    const y = r.top + r.height / 2;
-    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-    sweepWord.textContent = lang === 'th' ? 'สวัสดี!' : 'Hello!';
-    sweepWord.lang = lang;
-    sweepSub.textContent = lang === 'th' ? 'EN  →  ไทย' : 'ไทย  →  EN';
-    sweep.classList.add('is-active');
+    // 3. pictures glide into place; the new words sharpen, top first
+    const glides = media.map((el) => {
+      const dy = before.get(el) - el.getBoundingClientRect().top;
+      return Math.abs(dy) < 1 ? null : el.animate(
+        [{ transform: `translateY(${dy.toFixed(1)}px)` }, { transform: 'none' }],
+        { duration: 520, easing: EASE }
+      );
+    }).filter(Boolean);
+    const h = window.innerHeight;
+    const arriving = wordsOnScreen(lang).map((el) => el.animate(
+      [{ opacity: 0, filter: 'blur(4px)' }, { opacity: 1, filter: 'blur(0)' }],
+      {
+        duration: 420,
+        delay: Math.min(1, Math.max(0, el.getBoundingClientRect().top / h)) * 140,
+        easing: EASE,
+        fill: 'backwards',
+      }
+    ));
+    await settle(glides.concat(arriving));
+  }
 
-    const cover = sweep.animate(
-      [{ clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(${radius}px at ${x}px ${y}px)` }],
-      { duration: 560, easing: EASE_IN_OUT, fill: 'forwards' }
-    );
-    // the greeting is written on, then underlined. The clip leaves plenty of
-    // room around the word (tall strokes like "!" and Thai tone marks reach
-    // well outside the text box) and is dropped once the word is written.
-    sweepWord.animate(
-      [{ clipPath: 'inset(-60% 100% -60% -20%)' }, { clipPath: 'inset(-60% -20% -60% -20%)' }],
-      { duration: 650, delay: 220, easing: 'ease-out', fill: 'backwards' }
-    );
-    sweepLine.animate(
-      [{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }],
-      { duration: 500, delay: 560, easing: EASE, fill: 'both' }
-    );
-    sweepSub.animate(
-      [{ opacity: 0, translate: '0 8px' }, { opacity: .75, translate: '0 0' }],
-      { duration: 400, delay: 450, easing: EASE, fill: 'both' }
-    );
-    await cover.finished;
+  let busy = false;
 
-    // 2. the language changes underneath
-    apply(lang, true);
-    await wait(420);
+  async function switchTo(lang) {
+    if (busy || root.getAttribute('data-lang') === lang) return;
+    busy = true;
+    const change = () => { apply(lang, true); tell(lang); };
+    const animated = root.classList.contains('motion') && !reduceMotion.matches
+      && typeof document.body.animate === 'function';
 
-    // 3. the sheet lifts away on a tilted edge and the new text rises in
-    const lift = sweep.animate(
-      [
-        { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' },
-        { clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 75%)', offset: 0.45 },
-        { clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)' },
-      ],
-      { duration: 640, easing: EASE_IN_OUT, fill: 'forwards' }
-    );
-    playIn(lang);
-    tell(lang);
-    await lift.finished;
+    try {
+      if (animated) await refocus(lang, change);
+      else change();
+    } catch (e) {
+      // an interrupted switch must never leave the old language showing
+      if (root.getAttribute('data-lang') !== lang) change();
+      document.querySelectorAll('[data-l]').forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+    }
 
-    sweep.classList.remove('is-active');
-    sweep.getAnimations({ subtree: true }).forEach((a) => a.cancel());
     announce(lang);
     busy = false;
   }
 
   buttons.forEach((b) => {
-    b.addEventListener('click', () => switchTo(b.dataset.setLang, b));
+    b.addEventListener('click', () => switchTo(b.dataset.setLang));
+  });
+
+  // The welcome screen (gate.js) sets the language without a fade:
+  // it has its own exit, and the site makes its entrance afterwards.
+  document.addEventListener('site:choose-lang', (e) => {
+    const lang = e.detail && e.detail.lang === 'th' ? 'th' : 'en';
+    apply(lang, true);
+    tell(lang);
+    announce(lang);
   });
 })();

@@ -5,7 +5,9 @@
    (the round button in the bar, and "Dark mode" in the phone menu)
    and the choice is remembered on this device. Without a saved
    choice the site follows the system setting, even if it changes
-   while the page is open. The phone browser's bar colour
+   while the page is open (e.g. phones that go dark at sunset).
+   Switching back to the device's own look forgets the choice, so
+   the site follows the device again. The phone browser's bar colour
    (meta theme-color) follows the theme too.
    ========================================================== */
 (function () {
@@ -13,7 +15,7 @@
   const buttons = Array.from(document.querySelectorAll('[data-theme-toggle]'));
   const barColour = document.querySelector('meta[name="theme-color"]');
   const system = window.matchMedia('(prefers-color-scheme: dark)');
-  const BAR = { light: '#FFFFFF', dark: '#0F1322' };
+  const BAR = { light: '#F7F8FA', dark: '#0C0D10' };
 
   function saved() {
     try { return localStorage.getItem('theme'); } catch (e) { return null; }
@@ -32,7 +34,12 @@
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       root.classList.add('theme-switching');
       apply(next);
-      try { localStorage.setItem('theme', next); } catch (e) { /* private mode: just don't remember */ }
+      // Choosing the same look as the device goes back to following the
+      // device; only a different look is remembered as the visitor's choice.
+      try {
+        if (next === (system.matches ? 'dark' : 'light')) localStorage.removeItem('theme');
+        else localStorage.setItem('theme', next);
+      } catch (e) { /* private mode: just don't remember */ }
       setTimeout(() => root.classList.remove('theme-switching'), 400);
     });
   });
