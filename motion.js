@@ -204,6 +204,27 @@
     requestAnimationFrame(lightLead);
   });
 
+  /* ---------- The moving band can be paused (and played again) ----------
+     The choice is remembered on this device. With reduced motion the band
+     never moves, so the button stays hidden (this file stops earlier). */
+  const band = $('.marquee-band');
+  const bandButton = band && band.querySelector('.marquee-toggle');
+  if (bandButton) {
+    const setPaused = (paused) => {
+      band.classList.toggle('is-paused', paused);
+      bandButton.setAttribute('aria-pressed', String(paused));
+    };
+    let saved = null;
+    try { saved = localStorage.getItem('marquee'); } catch (e) { /* private mode */ }
+    setPaused(saved === 'paused');
+    bandButton.hidden = false;
+    bandButton.addEventListener('click', () => {
+      const paused = bandButton.getAttribute('aria-pressed') !== 'true';
+      setPaused(paused);
+      try { localStorage.setItem('marquee', paused ? 'paused' : 'playing'); } catch (e) { /* private mode */ }
+    });
+  }
+
   /* ---------- Mouse: the button leans in ---------- */
   if (fine) {
     $$('.btn').forEach((b) => {

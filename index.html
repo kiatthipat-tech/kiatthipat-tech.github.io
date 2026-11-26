@@ -11,6 +11,15 @@
   <meta property="og:type" content="profile">
   <meta property="og:title" content="Kiatthipat Mengsan">
   <meta property="og:description" content="Thai–English language, translation and international customer service professional.">
+  <meta property="og:url" content="https://kiatthipat-tech.github.io/">
+  <meta property="og:image" content="https://kiatthipat-tech.github.io/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Hello. สวัสดี. Kiatthipat (Pat) Mengsan walking down a cobbled street in London">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:locale:alternate" content="th_TH">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://kiatthipat-tech.github.io/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -67,6 +76,7 @@
   <script src="snaps.js" defer></script>
   <script src="video.js" defer></script>
   <script src="gate.js" defer></script>
+  <script src="counter.js" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -284,12 +294,16 @@
       </div>
     </header>
 
-    <!-- A slow band of what I do, in both languages (decorative; motion.js / CSS) -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <div class="marquee-group"><span class="mq" lang="en">Translation</span><span class="mq-dot"></span><span class="mq" lang="th">การแปล</span><span class="mq-dot"></span><span class="mq" lang="en">Interpreting</span><span class="mq-dot"></span><span class="mq" lang="th">งานล่าม</span><span class="mq-dot"></span><span class="mq" lang="en">English tutoring</span><span class="mq-dot"></span><span class="mq" lang="th">สอนภาษาอังกฤษ</span><span class="mq-dot"></span><span class="mq" lang="en">Customer service</span><span class="mq-dot"></span><span class="mq" lang="th">งานบริการลูกค้า</span><span class="mq-dot"></span><span class="mq" lang="en">Visa support</span><span class="mq-dot"></span><span class="mq" lang="th">เอกสารวีซ่า</span><span class="mq-dot"></span></div>
-        <div class="marquee-group"><span class="mq" lang="en">Translation</span><span class="mq-dot"></span><span class="mq" lang="th">การแปล</span><span class="mq-dot"></span><span class="mq" lang="en">Interpreting</span><span class="mq-dot"></span><span class="mq" lang="th">งานล่าม</span><span class="mq-dot"></span><span class="mq" lang="en">English tutoring</span><span class="mq-dot"></span><span class="mq" lang="th">สอนภาษาอังกฤษ</span><span class="mq-dot"></span><span class="mq" lang="en">Customer service</span><span class="mq-dot"></span><span class="mq" lang="th">งานบริการลูกค้า</span><span class="mq-dot"></span><span class="mq" lang="en">Visa support</span><span class="mq-dot"></span><span class="mq" lang="th">เอกสารวีซ่า</span><span class="mq-dot"></span></div>
+    <!-- A slow band of what I do, in both languages (decorative; motion.js / CSS).
+         The round button at its end pauses it and plays it again. -->
+    <div class="marquee-band">
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <div class="marquee-group"><span class="mq" lang="en">Translation</span><span class="mq-dot"></span><span class="mq" lang="th">การแปล</span><span class="mq-dot"></span><span class="mq" lang="en">Interpreting</span><span class="mq-dot"></span><span class="mq" lang="th">งานล่าม</span><span class="mq-dot"></span><span class="mq" lang="en">English tutoring</span><span class="mq-dot"></span><span class="mq" lang="th">สอนภาษาอังกฤษ</span><span class="mq-dot"></span><span class="mq" lang="en">Customer service</span><span class="mq-dot"></span><span class="mq" lang="th">งานบริการลูกค้า</span><span class="mq-dot"></span><span class="mq" lang="en">Visa support</span><span class="mq-dot"></span><span class="mq" lang="th">เอกสารวีซ่า</span><span class="mq-dot"></span></div>
+          <div class="marquee-group"><span class="mq" lang="en">Translation</span><span class="mq-dot"></span><span class="mq" lang="th">การแปล</span><span class="mq-dot"></span><span class="mq" lang="en">Interpreting</span><span class="mq-dot"></span><span class="mq" lang="th">งานล่าม</span><span class="mq-dot"></span><span class="mq" lang="en">English tutoring</span><span class="mq-dot"></span><span class="mq" lang="th">สอนภาษาอังกฤษ</span><span class="mq-dot"></span><span class="mq" lang="en">Customer service</span><span class="mq-dot"></span><span class="mq" lang="th">งานบริการลูกค้า</span><span class="mq-dot"></span><span class="mq" lang="en">Visa support</span><span class="mq-dot"></span><span class="mq" lang="th">เอกสารวีซ่า</span><span class="mq-dot"></span></div>
+        </div>
       </div>
+      <button class="marquee-toggle" type="button" aria-pressed="false" aria-label="Pause the moving words" data-th-aria-label="หยุดข้อความที่เลื่อนอยู่" hidden><svg class="icon-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6.5v11M15 6.5v11"/></svg><svg class="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6.2v11.6l9.3-5.8z"/></svg></button>
     </div>
 
     <!-- ============ ABOUT ============ -->
@@ -675,6 +689,13 @@
     <div class="wrap">
       <div class="footer-inner">
         <p>© 2026 <span data-l="en">Kiatthipat Mengsan</span><span data-l="th" lang="th">เกียรติภัทร์ เม่งซ่าน</span></p>
+        <!-- visitors today and this month (counter.js); stays hidden if the count can't load -->
+        <p class="visits" data-visits hidden>
+          <span class="visits-dot" aria-hidden="true"></span>
+          <span><span data-l="en">Visitors today</span><span data-l="th" lang="th">ผู้เข้าชมวันนี้</span> <strong data-visits-day>0</strong></span>
+          <span class="visits-sep" aria-hidden="true">·</span>
+          <span><span data-l="en">this month</span><span data-l="th" lang="th">เดือนนี้</span> <strong data-visits-month>0</strong></span>
+        </p>
         <a href="#top"><span data-l="en">Back to top</span><span data-l="th" lang="th">กลับขึ้นด้านบน</span> ↑</a>
       </div>
     </div>

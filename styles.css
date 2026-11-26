@@ -81,6 +81,13 @@ body {
 }
 html[data-lang="th"] body { line-height: 1.8; }
 
+/* selected text uses the highlighter tint, not the browser's blue */
+::selection { background: var(--mark); color: var(--ink); }
+
+/* no lonely last words: headings are balanced, running text evened out */
+h1, h2, h3 { text-wrap: balance; }
+p, li, dd, figcaption { text-wrap: pretty; }
+
 /* all Thai text is set in IBM Plex Sans Thai */
 body [lang="th"] { font-family: var(--thai); }
 
@@ -527,6 +534,36 @@ html[data-lang="th"] [data-l="en"] { display: none !important; }
 .mq[lang="th"] { color: var(--red); font-size: clamp(1.6rem, 3.8vw, 3.2rem); font-weight: 300; line-height: 1.5; }
 .mq-dot { flex: none; width: .55rem; height: .55rem; border-radius: 50%; background: var(--accent); }
 
+/* the pause / play button at the band's end (motion.js); shown only while
+   the band can move, on a frosted disc so the words pass under it */
+.marquee-band { position: relative; }
+.marquee-toggle {
+  position: absolute;
+  top: 50%;
+  right: var(--gutter);
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--veil);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--ink-2);
+  cursor: pointer;
+  translate: 0 -50%;
+  transition: color .3s ease, border-color .3s ease;
+}
+.marquee-toggle[hidden] { display: none; }
+.marquee-toggle:hover { color: var(--ink); border-color: var(--ink-3); }
+.marquee-toggle svg { width: .95rem; height: .95rem; }
+.marquee-toggle .icon-play,
+.marquee-toggle[aria-pressed="true"] .icon-pause { display: none; }
+.marquee-toggle[aria-pressed="true"] .icon-play { display: block; }
+.marquee-band.is-paused .marquee-track { animation-play-state: paused; }
+
 /* a hairline at the very top shows how far down the page you are (motion.js) */
 .scroll-progress {
   position: fixed;
@@ -818,6 +855,18 @@ h2 [lang="th"] { font-size: .8em; font-weight: 300; line-height: 1.35; letter-sp
 }
 .site-footer a { text-decoration: none; transition: color .3s ease; }
 .site-footer a:hover { color: var(--ink); }
+
+/* visitors today and this month (counter.js) */
+.visits { display: flex; flex-wrap: wrap; align-items: center; gap: .15rem .5rem; }
+.visits[hidden] { display: none; }
+.visits strong { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.visits-dot { width: .4rem; height: .4rem; border-radius: 50%; background: var(--accent); }
+.motion .visits-dot { animation: visits-pulse 2.4s ease-in-out infinite; }
+@keyframes visits-pulse { 50% { opacity: .3; } }
+/* phones: the count gets its own line above the other two */
+@media (max-width: 40rem) {
+  .visits { order: -1; width: 100%; }
+}
 
 /* ---------- Journey line (journey.js) ----------
    A hairline down the page that draws itself as you scroll,
@@ -1202,7 +1251,8 @@ html.gate-on { overflow: hidden; }
   .lang-switch button { min-width: 2.75rem; min-height: 2.75rem; }
   .lang-sep { display: none; }
   .theme-toggle,
-  .menu-toggle { width: 2.75rem; height: 2.75rem; }
+  .menu-toggle,
+  .marquee-toggle { width: 2.75rem; height: 2.75rem; }
   .lightbox-btn { width: 3rem; height: 3rem; }
   .link-arrow { min-height: 2.75rem; align-items: center; }
   .brand { padding-block: .6rem; }
@@ -1234,7 +1284,9 @@ html.gate-on { overflow: hidden; }
 .motion .marquee-track { animation: marquee 55s linear infinite; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
-.motion .marquee { opacity: 0; }
+.motion .marquee,
+.motion .marquee-toggle { opacity: 0; }
+.motion.is-loaded .marquee-toggle { opacity: 1; transition: opacity 1.2s ease 1.4s, color .3s ease, border-color .3s ease; }
 .motion.is-loaded .marquee { opacity: 1; transition: opacity 1.2s ease 1.1s; }
 
 /* section titles rise out of a mask, the rule above them draws itself */
@@ -1247,7 +1299,10 @@ html.gate-on { overflow: hidden; }
 .motion .section.is-in > .split::before { transform: scaleX(1); transition: transform 1.6s var(--ease); }
 
 /* the About lead lights up word by word as you read (motion.js) */
-.motion .prose p:first-child .w { opacity: .18; transition: opacity .45s ease; }
+/* words not reached yet stay readable: 3:1 or better as large text
+   (60% on phones, where the Thai lead is smaller) */
+.motion .prose p:first-child .w { opacity: .5; transition: opacity .45s ease; }
+@media (max-width: 40rem) { .motion .prose p:first-child .w { opacity: .6; } }
 .motion .prose p:first-child .w.is-lit { opacity: 1; }
 
 /* inside each job: the points arrive one after another */
@@ -1384,7 +1439,7 @@ html.gate-on { overflow: hidden; }
   a { text-decoration: none; }
   .wrap { max-width: none; padding: 0; }
 
-  .marquee, .scroll-progress,
+  .marquee-band, .scroll-progress,
   .nav, .skip, .actions, .role-line, .hero-aka, .hero-langs, .hero-media,
   .section-num, .aside-note, .gallery, .app-demo, .lightbox, .contact,
   .site-footer, .journey, .gate { display: none !important; }
